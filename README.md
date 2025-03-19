@@ -15,7 +15,7 @@
 
 <div align="center">
 
-  Inference Notebook: <a href="https://colab.research.google.com/drive/1sIfSMRB8TYX0G5YbdmtM89Sog-5ZplbA#scrollTo=BtfW45wkVCHz"><img src="https://colab.research.google.com/assets/colab-badge.svg" height=20></a> 
+  Inference Notebook: <a href="https://colab.research.google.com/drive/1sIfSMRB8TYX0G5YbdmtM89Sog-5ZplbA#scrollTo=BtfW45wkVCHz" target="_blank"><img src="https://colab.research.google.com/assets/colab-badge.svg" height=20></a> 
     
   [![Contributors][contributors-shield]][contributors-url]
   [![Forks][forks-shield]][forks-url]
@@ -28,7 +28,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
+  <a href="https://github.com/Mohammadimh76/image-caption-generator-pytorch">
     <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
@@ -36,11 +36,11 @@
 
   <p align="center">
     <br />
-    <a href="https://github.com/Mohammadimh76/image-caption-generator-pytorch">View Demo</a>
+    <a href="https://github.com/Mohammadimh76/image-caption-generator-pytorch" target="_blank">View Demo</a>
     &middot;
-    <a href="https://github.com/Mohammadimh76/image-caption-generator-pytorch/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
+    <a href="https://github.com/Mohammadimh76/image-caption-generator-pytorch/issues/new?labels=bug&template=bug-report---.md" target="_blank">Report Bug</a>
     &middot;
-    <a href="https://github.com/Mohammadimh76/image-caption-generator-pytorch/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
+    <a href="https://github.com/Mohammadimh76/image-caption-generator-pytorch/issues/new?labels=enhancement&template=feature-request---.md" target="_blank">Request Feature</a>
   </p>
 </div>
 
@@ -60,8 +60,8 @@
     <li>
       <a href="#about-the-project">About The Project</a>
       <ul>
-        <li><a href="#built-with">Built With</a></li>
         <li><a href="#about-the-dataset">About the Dataset</a></li>
+        <li><a href="#built-with">Built With</a></li>
       </ul>
     </li>
     <li>
@@ -84,26 +84,26 @@
 ---
 
 <!-- ABOUT THE PROJECT -->
-## 📌 About The Project
+## 📌About The Project
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### 📊 About the Dataset 
+### 📊About the Dataset 
 
-### 🛠️ Built With 
+### 🛠Built With 
 
 ---
 
 <!-- GETTING STARTED -->
-## 🚀 Getting Started
+## 🚀Getting Started
 
 Follow these simple steps to get a local copy of the project up and running:
 
-### ✅ Prerequisites 
+### ✅Prerequisites 
 
 This is an example of how to list things you need to use the software and how to install them.
 
-### 🖥️ Installation 
+### 🖥Installation 
 
 Follow these simple steps to install and set up your app. This template is fully self-contained and does not require any external dependencies or services.
 
@@ -119,7 +119,7 @@ Follow these simple steps to install and set up your app. This template is fully
 ---
 
 <!-- USAGE EXAMPLES -->
-## 🎯 Usage 
+## 🎯Usage 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -127,7 +127,7 @@ Follow these simple steps to install and set up your app. This template is fully
 ---
 
 <!-- ROADMAP -->
-## 🗺️ Roadmap 
+## 🗺Roadmap 
 - [ ] R1
   - [ ] R1.1
   - [ ] R1.2 
@@ -143,7 +143,7 @@ See the [open issues][open-issues-url] for a full list of proposed features (and
 ---
 
 <!-- CONTRIBUTING -->
-## 🤝 Contributing 
+## 🤝Contributing 
 
 The open-source community thrives on collaboration, learning, and innovation. Your contributions—big or small—help make this project better for everyone, and we truly appreciate them!
 
@@ -163,7 +163,7 @@ Thank you for helping improve this project! 🚀💡
 ---
 
 <!-- LICENSE -->
-## 📜 License 
+## 📜License 
 
 Distributed under the Unlicense License. See `LICENSE.txt` for more information.
 
@@ -172,7 +172,7 @@ Distributed under the Unlicense License. See `LICENSE.txt` for more information.
 ---
 
 <!-- CONTACT -->
-## 📞 Contact 
+## 📞Contact 
 
 |  <b>[1]</b>  | <b>Mohammad Hossein Mohammadi</b>  | [![Github][Github.com]][github-url] [![Linkedin][Linkedin.com]][linkedin-url] |
 | ------------- | ------------- | ------------- |
@@ -184,7 +184,7 @@ Distributed under the Unlicense License. See `LICENSE.txt` for more information.
 ---
 
 <!-- ACKNOWLEDGMENTS -->
-## 🙌 Acknowledgments 
+## 🙌Acknowledgments 
  
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -192,7 +192,7 @@ Distributed under the Unlicense License. See `LICENSE.txt` for more information.
 ---
 
 <!-- REFERENCES -->
-## 🔗 References 
+## 🔗References 
 
 1. ...
 2. ...
@@ -202,7 +202,7 @@ Distributed under the Unlicense License. See `LICENSE.txt` for more information.
 ---
 
 <!-- FAQs -->
-## ❓ FAQs 
+## ❓FAQs 
 
 
 
