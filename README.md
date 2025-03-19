@@ -46,7 +46,7 @@
 
 ---
 
-## Mentor
+## 🧑‍🏫 Mentor 
 
 |  <b>⚜️</b>  | <b>Mehdi Kazemi</b>  | [![Github][Github.com]][github-mentor-url] [![Linkedin][Linkedin.com]][linkedin-mentor-url]  |
 | ------------- | ------------- | ------------- |
@@ -55,7 +55,7 @@
 ---
 
 <!-- TABLE OF CONTENTS -->
-  ## Table of Contents
+  ## 📖 Table of Contents 
   <ol>
     <li>
       <a href="#about-the-project">About The Project</a>
@@ -84,26 +84,26 @@
 ---
 
 <!-- ABOUT THE PROJECT -->
-## About The Project
+## 📌 About The Project
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### About the Dataset
+### 📊 About the Dataset 
 
-### Built With
+### 🛠️ Built With 
 
 ---
 
 <!-- GETTING STARTED -->
-## Getting Started
+## 🚀 Getting Started
 
 Follow these simple steps to get a local copy of the project up and running:
 
-### Prerequisites
+### ✅ Prerequisites 
 
 This is an example of how to list things you need to use the software and how to install them.
 
-### Installation
+### 🖥️ Installation 
 
 Follow these simple steps to install and set up your app. This template is fully self-contained and does not require any external dependencies or services.
 
@@ -119,7 +119,7 @@ Follow these simple steps to install and set up your app. This template is fully
 ---
 
 <!-- USAGE EXAMPLES -->
-## Usage
+## 🎯 Usage 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -127,7 +127,7 @@ Follow these simple steps to install and set up your app. This template is fully
 ---
 
 <!-- ROADMAP -->
-## Roadmap
+## 🗺️ Roadmap 
 - [ ] R1
   - [ ] R1.1
   - [ ] R1.2 
@@ -143,7 +143,7 @@ See the [open issues][open-issues-url] for a full list of proposed features (and
 ---
 
 <!-- CONTRIBUTING -->
-## Contributing
+## 🤝 Contributing 
 
 The open-source community thrives on collaboration, learning, and innovation. Your contributions—big or small—help make this project better for everyone, and we truly appreciate them!
 
@@ -163,7 +163,7 @@ Thank you for helping improve this project! 🚀💡
 ---
 
 <!-- LICENSE -->
-## License
+## 📜 License 
 
 Distributed under the Unlicense License. See `LICENSE.txt` for more information.
 
@@ -172,7 +172,7 @@ Distributed under the Unlicense License. See `LICENSE.txt` for more information.
 ---
 
 <!-- CONTACT -->
-## Contact
+## 📞 Contact 
 
 |  <b>[1]</b>  | <b>Mohammad Hossein Mohammadi</b>  | [![Github][Github.com]][github-url] [![Linkedin][Linkedin.com]][linkedin-url] |
 | ------------- | ------------- | ------------- |
@@ -184,15 +184,15 @@ Distributed under the Unlicense License. See `LICENSE.txt` for more information.
 ---
 
 <!-- ACKNOWLEDGMENTS -->
-## Acknowledgments
-
+## 🙌 Acknowledgments 
+ 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 ---
 
 <!-- REFERENCES -->
-## References
+## 🔗 References 
 
 1. ...
 2. ...
@@ -202,7 +202,7 @@ Distributed under the Unlicense License. See `LICENSE.txt` for more information.
 ---
 
 <!-- FAQs -->
-## FAQs
+## ❓ FAQs 
 
 
 
