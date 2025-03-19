@@ -213,7 +213,7 @@ Distributed under the Unlicense License. See `LICENSE.txt` for more information.
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
 [contributors-shield]: https://img.shields.io/github/contributors/mohammadimh76/image-caption-generator-pytorch.svg?style=for-the-badge
-[contributors-url]: [https://github.com/othneildrew/Best-README-Template/graphs/contributors](https://github.com/mohammadimh76/image-caption-generator-pytorch/graphs/contributors)
+[contributors-url]: https://github.com/mohammadimh76/image-caption-generator-pytorch/graphs/contributors
 
 [forks-shield]: https://img.shields.io/github/forks/mohammadimh76/image-caption-generator-pytorch.svg?style=for-the-badge
 [forks-url]: https://github.com/Mohammadimh76/image-caption-generator-pytorch/network/members
