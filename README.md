@@ -277,7 +277,7 @@ Follow these simple steps to install and set up your app. This template is fully
   - [x] Step 1: Define the problem
   - [x] Step 2: Review existing methods
   - [x] Step 3: Choose the best method
-  - [ ] Step 4: Implement the chosen method
+  - [x] Step 4: Implement the chosen method
   - [ ] Step 5: Test the solution
   - [ ] Step 6: Improve the method
   - [ ] Step 7: Apply the solution in practice
