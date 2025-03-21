@@ -59,15 +59,16 @@
   <ol>
     <li>
       <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#about-the-dataset">About the Dataset</a></li>
           <ul>
             <li><a href="#approach-the-encoder-decoder-framework">Approach: The Encoder-Decoder Framework</a></li>
             <li><a href="#project-phases">Project Phases</a></li>
             <li><a href="#common-datasets-for-image-captioning">Common Datasets for Image Captioning</a></li>
             <li><a href="#evaluation-metrics-for-image-captioning">Evaluation Metrics for Image Captioning</a></li>
             <li><a href="#conclusion">Conclusion</a></li>
+            <li><a href="#step-2-review-existing-methods">Step 2: Review existing methods</a></li>
           </ul>
+      <ul>
+        <li><a href="#about-the-dataset">About the Dataset</a></li>
         <li><a href="#built-with">Built With</a></li>
       </ul>
     </li>
@@ -151,11 +152,13 @@ To achieve high-quality image captioning, different deep learning architectures 
     - A <b>Long Short-Term Memory (LSTM)</b> network serves as the decoder, generating a sequence of words based on the extracted features.
     - This approach captures sequential dependencies in text but may struggle with long-range dependencies and context retention.
 [^1] [^2]
+
 2. <b>Method 2 (Enhanced CNN + LSTM with Attention Mechanism):</b> To improve upon the basic CNN-LSTM model, an attention mechanism is integrated:
     - Instead of relying solely on a single fixed feature vector, <b>attention</b> dynamically focuses on different image regions while generating each word.
     - This allows the model to prioritize important visual features at each step, improving caption relevance and coherence.
     - The <b>Soft Attention</b> and <b>Hard Attention</b> mechanisms can be explored to enhance interpretability.
 [^3] [^4]
+
 3. <b>Method 3 (Transformer-based Model):</b> Leveraging <b>Transformers</b>, which have revolutionized both NLP and vision tasks:
     - <b>Vision Transformer (ViT)</b> or <b>CNN-based feature extractors</b> encode the image.
     - A <b>Transformer-based decoder</b> generates text using a self-attention mechanism, efficiently capturing long-range dependencies.
