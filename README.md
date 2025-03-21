@@ -32,7 +32,7 @@
     <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">Image Caption Generation using ...</h3>
+  <h3 align="center">Image Caption Generation using Deep Learning (CNN + LSTM Architecture)</h3>
 
   <p align="center">
     <br />
