@@ -61,6 +61,13 @@
       <a href="#about-the-project">About The Project</a>
       <ul>
         <li><a href="#about-the-dataset">About the Dataset</a></li>
+          <ul>
+            <li><a href="#approach-the-encoder-decoder-framework">Approach: The Encoder-Decoder Framework</a></li>
+            <li><a href="#project-phases">Project Phases</a></li>
+            <li><a href="#common-datasets-for-image-captioning">Common Datasets for Image Captioning</a></li>
+            <li><a href="#evaluation-metrics-for-image-captioning">Evaluation Metrics for Image Captioning</a></li>
+            <li><a href="#conclusion">Conclusion</a></li>
+          </ul>
         <li><a href="#built-with">Built With</a></li>
       </ul>
     </li>
@@ -88,11 +95,10 @@
 
 This project aims to develop an AI-powered system capable of generating descriptive text for images. Given an image as input, the system will analyze its content and produce a meaningful and contextually relevant textual description as output.
 
-The task, known as image captioning, is a complex challenge that combines computer vision and natural language processing (NLP). The system must not only recognize objects, actions, and scenes within an image but also structure this information into a fluent, human-like description.
+The task, known as image captioning, is a complex challenge that lies at the intersection of computer vision and natural language processing (NLP). The system must not only recognize objects, actions, and scenes within an image but also structure this information into a fluent, human-like description.
 
-To accomplish this, we will utilize state-of-the-art deep learning models, integrating convolutional neural networks (CNNs) for extracting visual features and recurrent neural networks (RNNs) or transformer-based architectures for text generation. This approach will enable the system to understand the visual elements of an image and translate them into a coherent narrative.
-
-The project is structured into four key phases:
+### Approach: The Encoder-Decoder Framework
+Most image captioning systems follow an encoder-decoder framework. In this approach, an image is first processed by an encoder, which converts it into a feature vector representing its key visual elements. Then, a decoder takes this feature vector and generates a sequence of words, forming a meaningful textual description of the image.
 
 ### Project Phases
 <b>Phase 1 – Backend Development</b>
@@ -100,21 +106,42 @@ The project is structured into four key phases:
   - Select the most effective method for image captioning.
   - Implement and optimize the chosen model.
   - Conduct rigorous testing and refine the system.
-  - Deploy the backend solution and document findings.<br>
-  
+  - Deploy the backend solution and document findings.
+
 <b>Phase 2 – Frontend Development</b>
   - Design and develop user-friendly application windows.
-  - Ensure a seamless user experience for interacting with the model.<br>
-  
+  - Ensure a seamless user experience for interacting with the model.
+
 <b>Phase 3 – Wizard Setup & Executable File</b>
   - Develop an installation wizard to simplify deployment.
   - Create an executable file for easy system usage.
-    
-<b>Phase 4 – Usability & Software Testing</b>
-  - Conduct extensive usability testing to improve user experience.
-  - Perform software testing to ensure stability, accuracy, and performance.<br>
 
-This project has numerous practical applications, including assistive technologies for visually impaired individuals, automated image annotation, and content management systems. By bridging the gap between vision and language, we aim to create a powerful tool for real-world use.
+<b>Phase 4 – Usability & Software Testing</b>
+- Conduct extensive usability testing to improve user experience.
+- Perform software testing to ensure stability, accuracy, and performance.
+
+### Common Datasets for Image Captioning
+Several benchmark datasets are widely used for training and evaluating image captioning models. These datasets contain large collections of images paired with human-annotated textual descriptions. Some of the most commonly used datasets include:
+
+- <b>COCO (Common Objects in Context)</b> – One of the most popular datasets for image captioning, COCO contains over 120,000 images, each annotated with multiple human-written captions. It provides a diverse range of everyday scenes and objects, making it ideal for training robust models.
+
+- <b>Flickr8k & Flickr30k</b> – These datasets consist of 8,000 and 30,000 images, respectively, collected from Flickr. Each image is accompanied by five descriptive captions, providing rich textual annotations for training captioning models.
+
+- <b>nocaps (Novel Object Captioning at Scale)</b> – A challenging dataset designed to evaluate a model's ability to describe images containing objects that were not seen during training. It tests generalization beyond the training data and is valuable for improving real-world performance.
+
+These datasets play a crucial role in developing and benchmarking image captioning models, ensuring that they can generate accurate and diverse textual descriptions for a wide range of images.
+
+### Evaluation Metrics for Image Captioning
+To assess the quality of generated image captions, several automatic evaluation metrics are commonly used. These metrics compare the generated captions with human-annotated reference captions and measure how well they match in terms of content, structure, and fluency. Two widely used metrics are:
+
+- <b>BLEU (Bilingual Evaluation Understudy)</b> – This metric evaluates the similarity between generated and reference captions by measuring the n-gram overlap (i.e., how many words or phrases match between the generated text and human-written descriptions). BLEU is commonly used in machine translation and image captioning, but it may not always capture semantic meaning effectively.
+
+- <b>CIDEr (Consensus-based Image Description Evaluation)</b> – Unlike BLEU, CIDEr is specifically designed for image captioning. It computes the <b>TF-IDF (Term Frequency-Inverse Document Frequency) weighted n-gram similarity</b> between generated and reference captions, emphasizing important and distinctive words. CIDEr generally correlates better with human judgment in image captioning tasks.
+
+Both metrics help evaluate how well an AI-generated caption aligns with human expectations, but they are often complemented by human evaluation to ensure captions are not just textually similar but also meaningful and contextually accurate.
+
+### Conclusion
+This project has numerous practical applications, including assistive technologies for visually impaired individuals, automated image annotation, and content management systems. By bridging the gap between vision and language, we aim to create a powerful tool that enhances accessibility, improves content organization, and contributes to advancements in AI-driven language generation.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -283,6 +310,3 @@ Distributed under the Unlicense License. See `LICENSE.txt` for more information.
 [open-issues-url]: https://github.com/Mohammadimh76/image-caption-generator-pytorch/issues
 
 [inference-notebook-url]: https://colab.research.google.com/drive/1sIfSMRB8TYX0G5YbdmtM89Sog-5ZplbA#scrollTo=BtfW45wkVCHz
-
-
-
