@@ -235,7 +235,7 @@ Following these stages ensures a structured workflow, leading to a well-optimize
 
 ### 📊About the Dataset 
 
-#### Selected Dataset: Flickr8k
+## Selected Dataset: Flickr8k
 
 The Flickr8k dataset is a benchmark collection designed for sentence-based image description and image search tasks. It consists of 8,000 images, each paired with five distinct human-annotated captions that provide clear and detailed descriptions of the key entities and events within the scene.
 
@@ -249,8 +249,8 @@ The Flickr8k dataset is a benchmark collection designed for sentence-based image
 The images were sourced from Flickr and manually curated to ensure visual diversity and descriptive richness. While the exact time period of collection is not specified, the dataset remains a widely used standard in computer vision and natural language processing research.
 
 <b>Why Flickr8k?</b><br>
-✅ Compact yet effective – Suitable for training image captioning models with limited computational resources.
-✅ Multiple captions per image – Provides linguistic diversity, helping models learn contextual variations.
+✅ Compact yet effective – Suitable for training image captioning models with limited computational resources.<br>
+✅ Multiple captions per image – Provides linguistic diversity, helping models learn contextual variations.<br>
 ✅ Standard benchmark – Frequently used in research for comparison with existing approaches in image captioning and retrieval.
 
 Before training, the dataset undergoes preprocessing, including image resizing, normalization, and text tokenization, to optimize performance for deep learning models.
