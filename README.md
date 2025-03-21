@@ -235,11 +235,25 @@ Following these stages ensures a structured workflow, leading to a well-optimize
 
 ### 📊About the Dataset 
 
-<b>Context</b>
-A new benchmark collection for sentence-based image description and search, consisting of 8,000 images that are each paired with five different captions which provide clear descriptions of the salient entities and events. … The images were chosen from six different Flickr groups, and tend not to contain any well-known people or locations, but were manually selected to depict a variety of scenes and situations
+#### Selected Dataset: Flickr8k
 
-<b>Content66</b>
-What's inside is more than just rows and columns. Make it easy for others to get started by describing how you acquired the data and what time period it represents, too.
+The Flickr8k dataset is a benchmark collection designed for sentence-based image description and image search tasks. It consists of 8,000 images, each paired with five distinct human-annotated captions that provide clear and detailed descriptions of the key entities and events within the scene.
+
+
+<b>Dataset Characteristics</b><br>
+  - Diverse Content – Images were manually selected from six different Flickr groups, ensuring a wide range of everyday scenes, objects, and activities.
+  - No Famous Landmarks or Celebrities – The dataset avoids well-known people and locations, focusing instead on generic yet meaningful real-world scenarios.
+  - Rich Annotations – Each image has five independent captions, capturing different perspectives and variations in language usage.
+
+<b>Data Collection & Timeframe</b><br>
+The images were sourced from Flickr and manually curated to ensure visual diversity and descriptive richness. While the exact time period of collection is not specified, the dataset remains a widely used standard in computer vision and natural language processing research.
+
+<b>Why Flickr8k?</b><br>
+✅ Compact yet effective – Suitable for training image captioning models with limited computational resources.
+✅ Multiple captions per image – Provides linguistic diversity, helping models learn contextual variations.
+✅ Standard benchmark – Frequently used in research for comparison with existing approaches in image captioning and retrieval.
+
+Before training, the dataset undergoes preprocessing, including image resizing, normalization, and text tokenization, to optimize performance for deep learning models.
 
 <b>Source:</b> [Flickr8k](https://www.kaggle.com/datasets/adityajn105/flickr8k)
 
