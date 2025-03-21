@@ -66,6 +66,7 @@
             <li><a href="#evaluation-metrics-for-image-captioning">Evaluation Metrics for Image Captioning</a></li>
             <li><a href="#conclusion">Conclusion</a></li>
             <li><a href="#step-2-review-existing-methods">Step 2: Review existing methods</a></li>
+            <li><a href="#step-3-choose-the-best-method">Step 3: Choose the best method</a></li>
           </ul>
       <ul>
         <li><a href="#about-the-dataset">About the Dataset</a></li>
@@ -168,6 +169,21 @@ To achieve high-quality image captioning, different deep learning architectures 
 Each of these approaches builds upon the strengths of the previous one, moving from traditional sequence models toward state-of-the-art architectures for more accurate, human-like image descriptions.
 
 
+### Step 3: Choose the best method
+
+<!-- Step(3)Choose the best method-train-1.png -->
+<br />
+<div align="center">
+    <img src="images/Step(3)Choose the best method-train-1.png" alt="STP3T1">
+  <em>Step(3)Choose the best method-train-1</em>
+</div>
+
+<!-- Step(3)Choose the best method-train-2.png -->
+<div align="center">
+    <img src="images/Step(3)Choose the best method-train-2.png" alt="STP3T1">
+  <em>Step(3)Choose the best method-train-2</em>
+</div>
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
@@ -214,7 +230,7 @@ Follow these simple steps to install and set up your app. This template is fully
 - [ ] Phase (1) - Backend Development
   - [x] Step 1: Define the problem
   - [x] Step 2: Review existing methods
-  - [ ] Step 3: Choose the best method
+  - [x] Step 3: Choose the best method
   - [ ] Step 4: Implement the chosen method
   - [ ] Step 5: Test the solution
   - [ ] Step 6: Improve the method
