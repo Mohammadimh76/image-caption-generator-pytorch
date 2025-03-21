@@ -128,7 +128,7 @@ Follow these simple steps to install and set up your app. This template is fully
 
 <!-- ROADMAP -->
 ## 🗺Roadmap 
-- [ ] Phase (1) - (backend)
+- [ ] Phase (1) - Backend Development
   - [ ] Step 1: Define the problem
   - [ ] Step 2: Review existing methods
   - [ ] Step 3: Choose the best method
@@ -137,9 +137,10 @@ Follow these simple steps to install and set up your app. This template is fully
   - [ ] Step 6: Improve the method
   - [ ] Step 7: Apply the solution in practice
   - [ ] Step 8: Document and present the work
-  
-- [ ] Phase (2) - (frontend)
-  - [ ] Application windows
+- [ ] Phase (2) - Frontend Development
+  - [ ] Design and implement application windows
+- [ ] Phase (3) – Wizard Setup + Executable File
+- [ ] Phase (4) – Usability & Software Testing
 
 
 See the [open issues][open-issues-url] for a full list of proposed features (and known issues).
