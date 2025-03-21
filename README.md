@@ -235,6 +235,14 @@ Following these stages ensures a structured workflow, leading to a well-optimize
 
 ### 📊About the Dataset 
 
+<b>Context</b>
+A new benchmark collection for sentence-based image description and search, consisting of 8,000 images that are each paired with five different captions which provide clear descriptions of the salient entities and events. … The images were chosen from six different Flickr groups, and tend not to contain any well-known people or locations, but were manually selected to depict a variety of scenes and situations
+
+<b>Content66</b>
+What's inside is more than just rows and columns. Make it easy for others to get started by describing how you acquired the data and what time period it represents, too.
+
+<b>Source:</b> [Flickr8k](https://www.kaggle.com/datasets/adityajn105/flickr8k)
+
 ### 🛠Built With 
 
 ---
