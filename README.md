@@ -67,6 +67,7 @@
             <li><a href="#conclusion">Conclusion</a></li>
             <li><a href="#step-2-review-existing-methods">Step 2: Review existing methods</a></li>
             <li><a href="#step-3-choose-the-best-method">Step 3: Choose the best method</a></li>
+            <li><a href="#step-4-implement-the-chosen-method">Step 4: Implement the chosen method</a></li>
           </ul>
       <ul>
         <li><a href="#about-the-dataset">About the Dataset</a></li>
@@ -180,9 +181,54 @@ Each of these approaches builds upon the strengths of the previous one, moving f
 
 <!-- Step(3)Choose the best method-train-2.png -->
 <div align="center">
-    <img src="images/Step(3)Choose the best method-train-2.png" alt="STP3T1">
+    <img src="images/Step(3)Choose the best method-train-2.png" alt="STP3T2">
   <em>Step(3)Choose the best method-train-2</em>
 </div>
+
+### Step 4: Implement the chosen method
+The development of the image captioning system follows a structured, step-by-step approach to ensure efficiency and accuracy. The key stages of the implementation are:
+
+
+<!-- Stages.png -->
+<div align="center">
+    <img src="images/Stages.png" alt="STP4STGS">
+</div>
+
+
+<b>Stage 1: Data Preparation</b>
+  - Collect and preprocess image-caption datasets (e.g., COCO, Flickr30k, nocaps).
+  - Perform image resizing, normalization, and tokenization of text captions.
+  - Split the dataset into training, validation, and test sets.
+
+
+<b>Stage 2: Model Selection & Design</b>
+  - Choose an appropriate architecture: <b>CNN + LSTM, Attention-based CNN-LSTM, or Transformer-based model.</b>
+  - Implement the encoder (CNN/ViT) for feature extraction.
+  - Implement the decoder (LSTM/Transformer) for text generation.
+
+<b>Stage 3: Model Configuration</b>
+  - Define hyperparameters such as <b>learning rate, batch size, embedding size, and dropout rate.</b>
+  - Select an optimizer (<b>Adam, RMSprop</b>) and loss function (<b>cross-entropy, BLEU-based loss</b>).
+  - Configure pre-trained embeddings if applicable.
+
+<b>Stage 4: Training & Evaluation Functions</b>
+  - Implement <b>loss functions</b> and <b>evaluation metrics (BLEU, CIDEr, METEOR).</b>
+  Define the training loop, incorporating <b>gradient updates, backpropagation, and - attention mechanisms</b> if used.
+  - Implement a checkpointing system to save and restore the best models.
+
+<b>Stage 5: Model Training</b>
+  - Train the model using <b>GPU-accelerated deep learning frameworks</b> (<b>TensorFlow/PyTorch</b>).
+  - Fine-tune the model on validation data to prevent overfitting.
+  - Utilize techniques like <b>learning rate scheduling and early stopping</b> for optimization.
+
+<b>Stage 6: Model Evaluation & Testing</b>
+  - Evaluate the trained model on the test dataset using automated metrics.
+  - Compare performance across different architectures (CNN-LSTM, Attention-based, Transformer).
+  - Perform qualitative analysis by visually inspecting generated captions.
+
+Following these stages ensures a structured workflow, leading to a well-optimized model capable of generating accurate and contextually relevant image descriptions.
+
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
