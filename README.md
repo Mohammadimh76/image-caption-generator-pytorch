@@ -128,12 +128,19 @@ Follow these simple steps to install and set up your app. This template is fully
 
 <!-- ROADMAP -->
 ## 🗺Roadmap 
-- [ ] R1
-  - [ ] R1.1
-  - [ ] R1.2 
-- [ ] R2
-- [ ] R3
-- [ ] R4
+- [ ] Phase (1) - (backend)
+  - [ ] Step 1: Define the problem
+  - [ ] Step 2: Review existing methods
+  - [ ] Step 3: Choose the best method
+  - [ ] Step 4: Implement the chosen method
+  - [ ] Step 5: Test the solution
+  - [ ] Step 6: Improve the method
+  - [ ] Step 7: Apply the solution in practice
+  - [ ] Step 8: Document and present the work
+  
+- [ ] Phase (2) - (frontend)
+  - [ ] Application windows
+
 
 See the [open issues][open-issues-url] for a full list of proposed features (and known issues).
 
