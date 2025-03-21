@@ -186,7 +186,7 @@ Follow these simple steps to install and set up your app. This template is fully
 <!-- ROADMAP -->
 ## 🗺Roadmap 
 - [ ] Phase (1) - Backend Development
-  - [ ] Step 1: Define the problem
+  - [x] Step 1: Define the problem
   - [ ] Step 2: Review existing methods
   - [ ] Step 3: Choose the best method
   - [ ] Step 4: Implement the chosen method
