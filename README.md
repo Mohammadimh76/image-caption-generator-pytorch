@@ -86,6 +86,36 @@
 <!-- ABOUT THE PROJECT -->
 ## 📌About The Project
 
+This project aims to develop an AI-powered system capable of generating descriptive text for images. Given an image as input, the system will analyze its content and produce a meaningful and contextually relevant textual description as output.
+
+The task, known as image captioning, is a complex challenge that combines computer vision and natural language processing (NLP). The system must not only recognize objects, actions, and scenes within an image but also structure this information into a fluent, human-like description.
+
+To accomplish this, we will utilize state-of-the-art deep learning models, integrating convolutional neural networks (CNNs) for extracting visual features and recurrent neural networks (RNNs) or transformer-based architectures for text generation. This approach will enable the system to understand the visual elements of an image and translate them into a coherent narrative.
+
+The project is structured into four key phases:
+
+### Project Phases
+<b>Phase 1 – Backend Development</b>
+  - Define the problem and research existing approaches.
+  - Select the most effective method for image captioning.
+  - Implement and optimize the chosen model.
+  - Conduct rigorous testing and refine the system.
+  - Deploy the backend solution and document findings.<br>
+  
+<b>Phase 2 – Frontend Development</b>
+  - Design and develop user-friendly application windows.
+  - Ensure a seamless user experience for interacting with the model.<br>
+  
+<b>Phase 3 – Wizard Setup & Executable File</b>
+  - Develop an installation wizard to simplify deployment.
+  - Create an executable file for easy system usage.
+    
+<b>Phase 4 – Usability & Software Testing</b>
+  - Conduct extensive usability testing to improve user experience.
+  - Perform software testing to ensure stability, accuracy, and performance.<br>
+
+This project has numerous practical applications, including assistive technologies for visually impaired individuals, automated image annotation, and content management systems. By bridging the gap between vision and language, we aim to create a powerful tool for real-world use.
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### 📊About the Dataset 
