@@ -123,11 +123,11 @@ Most image captioning systems follow an encoder-decoder framework. In this appro
 ### Common Datasets for Image Captioning
 Several benchmark datasets are widely used for training and evaluating image captioning models. These datasets contain large collections of images paired with human-annotated textual descriptions. Some of the most commonly used datasets include:
 
-- <b>COCO (Common Objects in Context)</b> – One of the most popular datasets for image captioning, COCO contains over 120,000 images, each annotated with multiple human-written captions. It provides a diverse range of everyday scenes and objects, making it ideal for training robust models.
+- <b>[COCO (Common Objects in Context)](https://cocodataset.org/#home)</b> – One of the most popular datasets for image captioning, COCO contains over 120,000 images, each annotated with multiple human-written captions. It provides a diverse range of everyday scenes and objects, making it ideal for training robust models.
 
-- <b>Flickr8k & Flickr30k</b> – These datasets consist of 8,000 and 30,000 images, respectively, collected from Flickr. Each image is accompanied by five descriptive captions, providing rich textual annotations for training captioning models.
+- <b>[Flickr8k](https://www.kaggle.com/datasets/adityajn105/flickr8k) & [Flickr30k](https://paperswithcode.com/dataset/flickr30k)</b> – These datasets consist of 8,000 and 30,000 images, respectively, collected from Flickr. Each image is accompanied by five descriptive captions, providing rich textual annotations for training captioning models.
 
-- <b>nocaps (Novel Object Captioning at Scale)</b> – A challenging dataset designed to evaluate a model's ability to describe images containing objects that were not seen during training. It tests generalization beyond the training data and is valuable for improving real-world performance.
+- <b>[nocaps (Novel Object Captioning at Scale)](https://nocaps.org/)</b> – A challenging dataset designed to evaluate a model's ability to describe images containing objects that were not seen during training. It tests generalization beyond the training data and is valuable for improving real-world performance.
 
 These datasets play a crucial role in developing and benchmarking image captioning models, ensuring that they can generate accurate and diverse textual descriptions for a wide range of images.
 
@@ -259,9 +259,10 @@ Distributed under the Unlicense License. See `LICENSE.txt` for more information.
 <!-- REFERENCES -->
 ## 🔗References 
 
-1. ...
-2. ...
-3. ...
+1. [COCO (Common Objects in Context)](https://cocodataset.org/#home)
+2. [Flickr8k](https://www.kaggle.com/datasets/adityajn105/flickr8k)
+3. [Flickr30k](https://paperswithcode.com/dataset/flickr30k)
+4. [nocaps (Novel Object Captioning at Scale)](https://nocaps.org/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
    
