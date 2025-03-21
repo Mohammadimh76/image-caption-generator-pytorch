@@ -1,4 +1,4 @@
-
+<a id="readme-top"></a>
 
 # ⚠️Under construction
 
@@ -53,8 +53,6 @@
 
 
 ---
-
-<a id="readme-top"></a>
 
 <!-- TABLE OF CONTENTS -->
   ## 📖 Table of Contents 
@@ -145,7 +143,30 @@ Both metrics help evaluate how well an AI-generated caption aligns with human ex
 ### Conclusion
 This project has numerous practical applications, including assistive technologies for visually impaired individuals, automated image annotation, and content management systems. By bridging the gap between vision and language, we aim to create a powerful tool that enhances accessibility, improves content organization, and contributes to advancements in AI-driven language generation.
 
+### Step 2: Review existing methods
+To achieve high-quality image captioning, different deep learning architectures can be employed. The project explores three main approaches, each improving upon the previous one:
+
+1. <b>Method 1 (CNN + LSTM Architecture):</b> A traditional encoder-decoder framework where:
+    - A <b>Convolutional Neural Network (CNN)</b> extracts visual features from the image.
+    - A <b>Long Short-Term Memory (LSTM)</b> network serves as the decoder, generating a sequence of words based on the extracted features.
+    - This approach captures sequential dependencies in text but may struggle with long-range dependencies and context retention.
+[^1] [^2]
+2. <b>Method 2 (Enhanced CNN + LSTM with Attention Mechanism):</b> To improve upon the basic CNN-LSTM model, an attention mechanism is integrated:
+    - Instead of relying solely on a single fixed feature vector, <b>attention</b> dynamically focuses on different image regions while generating each word.
+    - This allows the model to prioritize important visual features at each step, improving caption relevance and coherence.
+    - The <b>Soft Attention</b> and <b>Hard Attention</b> mechanisms can be explored to enhance interpretability.
+[^3] [^4]
+3. <b>Method 3 (Transformer-based Model):</b> Leveraging <b>Transformers</b>, which have revolutionized both NLP and vision tasks:
+    - <b>Vision Transformer (ViT)</b> or <b>CNN-based feature extractors</b> encode the image.
+    - A <b>Transformer-based decoder</b> generates text using a self-attention mechanism, efficiently capturing long-range dependencies.
+    - This model significantly improves fluency, contextual understanding, and adaptability to diverse images.
+[^5] [^6] [^7] [^8]
+
+Each of these approaches builds upon the strengths of the previous one, moving from traditional sequence models toward state-of-the-art architectures for more accurate, human-like image descriptions.
+
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 
 ### 📊About the Dataset 
 
@@ -189,7 +210,7 @@ Follow these simple steps to install and set up your app. This template is fully
 ## 🗺Roadmap 
 - [ ] Phase (1) - Backend Development
   - [x] Step 1: Define the problem
-  - [ ] Step 2: Review existing methods
+  - [x] Step 2: Review existing methods
   - [ ] Step 3: Choose the best method
   - [ ] Step 4: Implement the chosen method
   - [ ] Step 5: Test the solution
@@ -260,6 +281,15 @@ Distributed under the Unlicense License. See `LICENSE.txt` for more information.
 
 <!-- REFERENCES -->
 ## 🔗References 
+
+[^1]: How to Build an Image-Captioning Model in Pytorch - <b>([Link](https://towardsdatascience.com/how-to-build-an-image-captioning-model-in-pytorch-29b9d8fe2f8c/))</b>
+[^2]: Pytorch Image Captioning Tutorial (Youtube) - <b>([Link](https://www.youtube.com/watch?v=y2BaTt1fxJU))</b>
+[^3]: Show, Attend and Tell: Neural Image Caption Generation with Visual Attention - <b>([Link](https://arxiv.org/abs/1502.03044))</b>
+[^4]: a-PyTorch-Tutorial-to-Image-Captioning - (Github) - <b>([Link](https://github.com/sgrvinod/a-PyTorch-Tutorial-to-Image-Captioning))</b>
+[^5]: CPTR: Full Transformer Network for Image Captioning - <b>([Link](https://arxiv.org/abs/2101.10804))</b>
+[^6]: transformer-image-captioning - (Github) - <b>([Link](https://github.com/milkymap/transformer-image-captioning))</b>
+[^7]: Vision Transformers (ViT) in Image Captioning Using Pretrained ViT Models - <b>([Link](https://www.analyticsvidhya.com/blog/2023/06/vision-transformers/))</b>
+[^8]: catr - (Github) - <b>([Link](https://github.com/saahiluppal/catr))</b>
 
 ### Datasets
 1. [COCO (Common Objects in Context)](https://cocodataset.org/#home)
