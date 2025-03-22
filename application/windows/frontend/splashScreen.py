@@ -63,8 +63,8 @@ class SplashScreen:
     
     def load_animation_images(self):
         """Load the animation images"""
-        self.image_off = ImageTk.PhotoImage(Image.open("application/windows/assets/images/frontend/c2_off.png"))
-        self.image_on = ImageTk.PhotoImage(Image.open("application/windows/assets/images/frontend/c1_on.png"))
+        self.image_off = ImageTk.PhotoImage(Image.open("application/windows/assets/images/frontend/splash/c2_off.png"))
+        self.image_on = ImageTk.PhotoImage(Image.open("application/windows/assets/images/frontend/splash/c1_on.png"))
     
     def create_circle(self, x_pos, image):
         """Create a circle label at the specified position"""
