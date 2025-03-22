@@ -1,0 +1,17 @@
+# Install the required dependencies for the project, ensuring compatibility between libraries.
+
+# Set Python version (Colab already provides Python, so this line may not be necessary)
+!pip install Python==3.10  # Ensure Python 3.10 for compatibility
+
+# Install PyTorch and related libraries
+!pip install torch==2.1.0
+!pip install torchtext==0.16.0
+!pip install torchvision==0.15.0
+!pip install torcheval==0.1.0
+!pip install torchmetrics==0.11.4
+
+# Install essential scientific computing and visualization libraries
+!pip install numpy        # Numerical computing library
+!pip install matplotlib   # Data visualization library
+!pip install pillow       # Image processing library (PIL fork)
+!pip install tqdm         # Progress bar utility for loops and scripts
