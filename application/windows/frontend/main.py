@@ -1,3 +1,4 @@
+# Import required libraries
 import tkinter as tk
 from customtkinter import set_appearance_mode, CTk, CTkFrame, CTkButton
 import customtkinter
@@ -8,46 +9,59 @@ from PIL import Image, ImageTk
 from tkinter import filedialog, messagebox
 
 class App:
+    """
+    Main application class that handles the GUI and all its functionality.
+    Uses customtkinter for modern-looking UI elements.
+    """
     def __init__(self):
+        """Initialize the main application window and its components"""
         self.app = CTk()
         self.setup_window()
         self.current_page = None
         self.buttons = {}
 
-        self.create_option_menu()  # Create the option menu
-        self.main_frame = self.create_main_frame()  # Then create the main content frame
+        self.create_option_menu()  # Create the top navigation menu
+        self.main_frame = self.create_main_frame()  # Create the main content area
 
         self.create_pages()
-        self.switch_page("home")  # Default to home page
+        self.switch_page("home")  # Set home as the default page
 
     def setup_window(self):
+        """Configure the main window properties (size, position, theme, etc.)"""
+        # Calculate center position for the window
         screen_width = self.app.winfo_screenwidth()
         screen_height = self.app.winfo_screenheight()
         app_width = 1100
         app_height = 645
         x = (screen_width / 2) - (app_width / 2)
         y = (screen_height / 2) - (app_height / 2)
+        
+        # Set window properties
         self.app.geometry(f"{app_width}x{app_height}+{int(x)}+{int(y)}")
         self.app.title("Mohammad Hossein")
-        self.app.resizable(0, 0)
-        set_appearance_mode("dark")  # Set the app theme
-        #self.app.iconbitmap("img/logo.ico")  # Change the logo/icon
+        self.app.resizable(0, 0)  # Make window non-resizable
+        set_appearance_mode("dark")  # Set dark theme
+        #self.app.iconbitmap("img/logo.ico")  # Set window icon
 
     def create_main_frame(self):
+        """Create the main content frame where pages will be displayed"""
         main_frame_bg_color = "#242424"
         main_frame = tk.Frame(self.app, bg=main_frame_bg_color)
         main_frame.pack(expand=True, fill="both")
         return main_frame
 
     def create_option_menu(self):
+        """Create the top navigation menu with buttons for different pages"""
+        # Create frame for option menu
         option_menu_frame = CTkFrame(master=self.app, width=176, height=35, fg_color="#242424", corner_radius=0)
         option_menu_frame.pack_propagate(0)
-        option_menu_frame.pack(fill="x", side="top")  # Ensuring it is at the top
+        option_menu_frame.pack(fill="x", side="top")
 
+        # Create navigation buttons
         button_names = ["home", "runner", "config", "tools", "settings", "about"]
         for name in button_names:
             button_text = name.capitalize()
-            button_width = len(button_text) + 2  # Add padding
+            button_width = len(button_text) + 2
             button = CTkButton(master=option_menu_frame, text=name.capitalize(), fg_color="#242424",
                                font=("Arial Bold", 14), text_color="#FFFFFF", hover_color="#242424",
                                anchor="center", corner_radius=0, width=button_width,
@@ -56,11 +70,13 @@ class App:
             self.buttons[name] = button
 
     def switch_page(self, page_name):
+        """Handle switching between different pages"""
         self.current_page = page_name
         self.update_button_colors()
         self.show_page(page_name)
 
     def update_button_colors(self):
+        """Update navigation button colors to show active/inactive state"""
         active_color = "#242424"
         inactive_color = "#242424"
         active_text_color = "#1E90FF"
@@ -73,6 +89,7 @@ class App:
                 button.configure(fg_color=inactive_color, text_color=inactive_text_color)
 
     def create_pages(self):
+        """Map page names to their corresponding creation methods"""
         self.pages = {
             "home": self.home_optionMenu_page,
             "runner": self.runner_optionMenu_page,
@@ -83,246 +100,232 @@ class App:
         }
 
     def show_page(self, page_name):
+        """Display the selected page and clear previous content"""
         self.clear_current_page()
         if page_name in self.pages:
             self.pages[page_name]()
 
     def clear_current_page(self):
+        """Remove all widgets from the main frame"""
         for widget in self.main_frame.winfo_children():
             widget.destroy()
 
-# "Home" option menu page methods
+    # Page creation methods
     def home_optionMenu_page(self):
+        """Create and display the home page content"""
         print("Home Page")
         home_page_frame = tk.Frame(self.main_frame, bg="#242424")
         home_page_frame.pack(fill=tk.BOTH, expand=True)
 
-# "Runner" option menu page methods
     def runner_optionMenu_page(self):
+        """Create and display the runner page with file handling functionality"""
         print("Runner Page")
 
-    # Create runner page frame
+        # Create main frame for runner page
         runner_page_frame = tk.Frame(self.main_frame, bg="#242424")
         runner_page_frame.pack(fill=tk.BOTH, expand=True)
 
-        # Configure the frame to expand the last row and column
-        runner_page_frame.grid_rowconfigure(0, weight=1)  # Makes row 0 expand
-        runner_page_frame.grid_columnconfigure(0, weight=1)  # Makes column 0 expand
+        # Configure grid layout
+        runner_page_frame.grid_rowconfigure(0, weight=1)
+        runner_page_frame.grid_columnconfigure(0, weight=1)
 
-    # Create image button
-        # Edit image button
+        # Load button images
         self.edit_img_data = Image.open("application/windows/assets/images/frontend/original/editSquare_img.png")
         self.edit_img = CTkImage(dark_image=self.edit_img_data, light_image=self.edit_img_data, size=(15, 15))
-      
-       # Upload image button
+        
         self.upload_img_data = Image.open("application/windows/assets/images/frontend/original/upload_img.png")
         self.upload_img = CTkImage(dark_image=self.upload_img_data, light_image=self.upload_img_data, size=(15, 15))
-      
-       # Browse image button
+        
         self.browse_img_data = Image.open("application/windows/assets/images/frontend/original/browse_img.png")
         self.browse_img = CTkImage(dark_image=self.browse_img_data, light_image=self.browse_img_data, size=(15, 15))
 
-        # Remove image button
         self.remove_img_data = Image.open("application/windows/assets/images/frontend/original/remove_img.png")
         self.remove_img = CTkImage(dark_image=self.remove_img_data, light_image=self.remove_img_data, size=(15, 15))
 
-    # Create widget
-        # Create the entry
-        self.entry_file_path = customtkinter.CTkEntry(runner_page_frame, placeholder_text="   Set File Path Address", font=("Arial Bold", 12), fg_color="#000000", border_width=2, border_color="#FFFFFF", corner_radius=0)
+        # Create file path entry
+        self.entry_file_path = customtkinter.CTkEntry(runner_page_frame, placeholder_text="   Set File Path Address", 
+                                                     font=("Arial Bold", 12), fg_color="#000000", 
+                                                     border_width=2, border_color="#FFFFFF", corner_radius=0)
         self.entry_file_path.grid(row=3, column=0, padx=(20, 0), pady=(20, 10), sticky="nsew")
 
-        # Create the Browse button
-        self.browse_button = customtkinter.CTkButton(runner_page_frame, text="Browse", image=self.browse_img, font=("Arial Bold", 12), fg_color="transparent", border_width=2, border_color="#FFFFFF", text_color="#FFFFFF", hover_color="#000000", corner_radius=0, command=self.browse_button_callback)
-        self.browse_button.grid(row=3, column=4, padx=(20, 20), pady=(20, 10),  ipady=4, sticky="nsew")
+        # Create browse button
+        self.browse_button = customtkinter.CTkButton(runner_page_frame, text="Browse", image=self.browse_img,
+                                                    font=("Arial Bold", 12), fg_color="transparent",
+                                                    border_width=2, border_color="#FFFFFF", text_color="#FFFFFF",
+                                                    hover_color="#000000", corner_radius=0,
+                                                    command=self.browse_button_callback)
+        self.browse_button.grid(row=3, column=4, padx=(20, 20), pady=(20, 10), ipady=4, sticky="nsew")
 
-        # Create the Disabled button # text_color=("gray10", "#DCE4EE")
-        self.disabled_button = customtkinter.CTkButton(runner_page_frame, text="Disabled", font=("Arial Bold", 12), state="disabled", fg_color="transparent", border_width=0, border_color="#FFFFFF", text_color=("gray10", "#DCE4EE"), hover_color="#000000", corner_radius=0)
+        # Create disabled button
+        self.disabled_button = customtkinter.CTkButton(runner_page_frame, text="Disabled",
+                                                      font=("Arial Bold", 12), state="disabled",
+                                                      fg_color="transparent", border_width=0,
+                                                      border_color="#FFFFFF", text_color=("gray10", "#DCE4EE"),
+                                                      hover_color="#000000", corner_radius=0)
         self.disabled_button.grid(row=3, column=6, padx=(0, 20), pady=(20, 10), ipady=4, sticky="nsew")
         
-        # Create the Remove button
-        self.remove_button = customtkinter.CTkButton(runner_page_frame, text="Remove", font=("Arial Bold", 12), fg_color="transparent", border_width=2, text_color=("gray10", "#DCE4EE"), hover_color="#000000", corner_radius=0, command=self.remove_button_callback)
+        # Create remove button (initially hidden)
+        self.remove_button = customtkinter.CTkButton(runner_page_frame, text="Remove",
+                                                    font=("Arial Bold", 12), fg_color="transparent",
+                                                    border_width=2, text_color=("gray10", "#DCE4EE"),
+                                                    hover_color="#000000", corner_radius=0,
+                                                    command=self.remove_button_callback)
         self.remove_button.grid(row=3, column=5, padx=(20, 10), pady=(20, 10), ipady=4, sticky="nsew")
-        self.remove_button.grid_remove()  # Hide the Remove button
-        
-        # Optionally, you can make the button column not expand to ensure the button size is consistent
-        runner_page_frame.grid_columnconfigure(1, weight=0)
+        self.remove_button.grid_remove()  # Initially hide the remove button
 
-# Define Browse button callback
     def browse_button_callback(self):
+        """Handle browse button click to select an image file"""
         print("Browse button clicked")
 
-        # Open a file dialog to select a file
         file_path = filedialog.askopenfilename(title="Select File", filetypes=[("Image Files", "*.png;*.jpg")])
 
         if file_path:
-            # Update the entry file path widget with the selected file path
+            # Update UI elements after file selection
             self.entry_file_path.delete(0, "end")
             self.entry_file_path.insert(0, file_path)
             print(f"Selected file: {file_path}")
 
-            # Update the Browse button to say "Edit" and change its color
+            # Update button states and appearance
             self.browse_button.configure(text="Edit", fg_color="red", image=self.edit_img)
-
-            # Enable the previously disabled button, change its text and color, and assign its command
-            self.disabled_button.configure(state="normal", text="OK", fg_color="green", border_width=2, border_color="#FFFFFF",image=self.upload_img)
-            # Assign the button callback method to the button command
-            self.disabled_button.configure(command=self.ok__button_callback)
-
-            # Show the Remove button with updated text and color
-            self.remove_button.grid(padx=(0, 20))
-            self.remove_button.configure(state="normal", text="Remove", fg_color="#BB8B0C", text_color="#FFFFFF", image=self.remove_img)
+            self.disabled_button.configure(state="normal", text="OK", fg_color="green",
+                                         border_width=2, border_color="#FFFFFF", image=self.upload_img,
+                                         command=self.ok__button_callback)
+            self.remove_button.grid()
+            self.remove_button.configure(state="normal", text="Remove", fg_color="#BB8B0C",
+                                       text_color="#FFFFFF", image=self.remove_img)
         else:
             print("No file selected")
 
-# Define Remove button callback
-    def remove_button_callback(self): 
-        # Reset the state of the buttons
-        self.browse_button.configure(text="Browse", state="normal", fg_color="transparent", border_width=2, text_color=("gray10", "#DCE4EE"), image=self.browse_img)
-        self.disabled_button.configure(state="disabled", text="Disabled", fg_color="transparent", border_color="#000000", border_width=0, text_color=("gray10", "#DCE4EE"), image=None)
-        
-        # Clear the file path entry file path
+    def remove_button_callback(self):
+        """Handle remove button click to clear file selection"""
+        # Reset UI elements to initial state
+        self.browse_button.configure(text="Browse", state="normal", fg_color="transparent",
+                                   border_width=2, text_color=("gray10", "#DCE4EE"), image=self.browse_img)
+        self.disabled_button.configure(state="disabled", text="Disabled", fg_color="transparent",
+                                     border_color="#000000", border_width=0,
+                                     text_color=("gray10", "#DCE4EE"), image=None)
         self.entry_file_path.delete(0, "end")
         self.entry_file_path.configure(placeholder_text="Set File Path Address")
-        
-        # Hide the Remove button again
-        self.remove_button.grid_remove()  # Hide the Remove button
+        self.remove_button.grid_remove()
 
-# Define Ok button callback
     def ok__button_callback(self):
+        """Handle OK button click (placeholder for future functionality)"""
         print("OK button clicked")
-            
-        #dialog = customtkinter.CTkInputDialog(text="Type in a number:", title="Alert!")
-        #center_dialog(dialog)
-            
-        #text = dialog.get_input()  # waits for input
 
-# "Config" option menu page methods
     def config_optionMenu_page(self):
+        """Create and display the configuration page"""
         print("Config Page")
-
-        # Create config page frame
         config_page_frame = tk.Frame(self.main_frame, bg="#1CBB0F")
         config_page_frame.pack(fill=tk.BOTH, expand=True)
-
         label_test = tk.Label(config_page_frame, text="Config Page", font=("Arial Bold", 25), fg="#E8006D")
         label_test.pack(pady=80)
 
-# "Tools" option menu page methods
     def tools_optionMenu_page(self):
+        """Create and display the tools page"""
         print("Tools Page")
-
-        # Create tools page frame
         tools_page_frame = tk.Frame(self.main_frame, bg="#8F0FBB")
         tools_page_frame.pack(fill=tk.BOTH, expand=True)
-
         label_test = tk.Label(tools_page_frame, text="Tools Page", font=("Arial Bold", 25), fg="#E8006D")
         label_test.pack(pady=80)
 
-# "Settings" option menu page methods
     def settings_optionMenu_page(self):
+        """Create and display the settings page with customization options"""
         print("Settings Page")
-
-        # Create settings page frame
         settings_page_frame = tk.Frame(self.main_frame, bg="#242424")
         settings_page_frame.pack(fill=tk.BOTH, expand=True)
 
-        # Define the settings text
-        settings_text = ("Customization" +
-                        "\n\n")
+        settings_text = ("Customization" + "\n\n")
 
-        # Create a Text widget for the settings text within the settings_page_frame
-        settings_text_widget = tk.Text(settings_page_frame, font=("Consolas", 24, "bold"), fg="#FFFFFF", bg="#242424",
-                                        wrap="word", borderwidth=0, highlightthickness=0)
+        # Create settings text display
+        settings_text_widget = tk.Text(settings_page_frame, font=("Consolas", 24, "bold"),
+                                     fg="#FFFFFF", bg="#242424", wrap="word",
+                                     borderwidth=0, highlightthickness=0)
         settings_text_widget.pack(side="top", fill="both", expand=True, padx=20, pady=20)
         settings_text_widget.insert("1.0", settings_text)
-        settings_text_widget.configure(state="disabled", inactiveselectbackground=settings_text_widget.cget("selectbackground"))
+        settings_text_widget.configure(state="disabled",
+                                     inactiveselectbackground=settings_text_widget.cget("selectbackground"))
 
-        # Create a Checkbutton widget with sample text
+        # Add sample checkbox
         check_button_var = tk.BooleanVar()
-        check_button = tk.Checkbutton(settings_page_frame, text="Sample Checkbox Text", variable=check_button_var,
-                                    font=("Arial", 14), bg="#242424", fg="#FFFFFF", selectcolor="#242424")
+        check_button = tk.Checkbutton(settings_page_frame, text="Sample Checkbox Text",
+                                    variable=check_button_var, font=("Arial", 14),
+                                    bg="#242424", fg="#FFFFFF", selectcolor="#242424")
         check_button.pack(pady=(0, 20))
 
-# "About" option menu page methods
     def about_optionMenu_page(self):
+        """Create and display the about page with project information"""
         print("About Page")
-
-        # Create about page frame
         about_page_frame = tk.Frame(self.main_frame, bg="#242424")
         about_page_frame.pack(fill=tk.BOTH, expand=True)
         
-        '''
-        # Define the new about text
-        about_text = ("Plate Detection 1.0.0" +
-                    " is an automation suite powered by customtkinter python. This software can be used for processing and parsing data and much more." +
-                    "\n\n\n\n")
-
-        # Create a Text widget for the new about text within the about_page_frame
-        about_text_widget = tk.Text(about_page_frame, font=("Consolas", 14, "bold"), fg="#FFFFFF", bg="#242424", wrap="word", borderwidth=0, highlightthickness=0)
-        about_text_widget.pack(side="top", fill="both", expand=True, padx=20, pady=20)
-        about_text_widget.insert("1.0", about_text)
-        about_text_widget.configure(state="disabled", inactiveselectbackground=about_text_widget.cget("selectbackground"))
-        '''
-        
-        # Define the new about text
-        about_text = (" This project aims to develop an AI-powered system capable of generating descriptive text for images. Given an image as input, the system will analyze its content and produce a meaningful and contextually relevant textual description as output. The task, known as image captioning, is a complex challenge that lies at the intersection of computer vision and natural language processing (NLP). The system must not only recognize objects, actions, and scenes within an image but also structure this information into a fluent, human-like description." +
-                    "\n\n\n")
+        # Project description text
+        about_text = (" This project aims to develop an AI-powered system capable of generating descriptive text for images. " +
+                     "Given an image as input, the system will analyze its content and produce a meaningful and contextually " +
+                     "relevant textual description as output. The task, known as image captioning, is a complex challenge that " +
+                     "lies at the intersection of computer vision and natural language processing (NLP). The system must not only " +
+                     "recognize objects, actions, and scenes within an image but also structure this information into a fluent, " +
+                     "human-like description." + "\n\n\n")
                     
-        # Create a Text widget for the new about text within the about_page_frame
-        about_text_widget = tk.Text(about_page_frame, font=("Consolas", 14, "bold"), fg="#FFFFFF", bg="#242424", wrap="word", borderwidth=0, highlightthickness=0)
+        # Create about text widget
+        about_text_widget = tk.Text(about_page_frame, font=("Consolas", 14, "bold"),
+                                  fg="#FFFFFF", bg="#242424", wrap="word",
+                                  borderwidth=0, highlightthickness=0)
         about_text_widget.pack(side="top", fill="both", expand=True, padx=20, pady=20)
         about_text_widget.insert("1.0", about_text)
         
-        # Add the specified text in red
-        red_text = ("Delevoper: Mohammad Hossein Mohammadi (Frontend)" +
-                    "\n" +
-                    "Collaborators: Mr. Mehdi Kazemi" +
-                     "\n" +
-                    "Mentor: Mr. Mehdi Kazemi" +
-                    "\n\n\n" +
-                    "Contact US:" +
-                    "\n" +
-                    "Mohammad Hossein Mohammadi -> Mohammadimir2017@gmail.com")
+        # Add developer information
+        red_text = ("Delevoper: Mohammad Hossein Mohammadi (Frontend)" + "\n" +
+                   "Collaborators: Mr. Mehdi Kazemi" + "\n" +
+                   "Mentor: Mr. Mehdi Kazemi" + "\n\n\n" +
+                   "Contact US:" + "\n" +
+                   "Mohammad Hossein Mohammadi -> Mohammadimir2017@gmail.com")
         about_text_widget.insert("end", red_text)
         
-        # Apply tag to make text red
+        # Style developer information text
         about_text_widget.tag_add("red_text", "3.0", "end")
         about_text_widget.tag_config("red_text", foreground="green")
-        
-        about_text_widget.configure(state="disabled", inactiveselectbackground=about_text_widget.cget("selectbackground"))
+        about_text_widget.configure(state="disabled",
+                                  inactiveselectbackground=about_text_widget.cget("selectbackground"))
 
-    # Create a container frame for the buttons to control their positions more precisely
-        button_container = tk.Frame(about_page_frame, bg="#242424", height=40)  # Height is optional, adjust as needed
+        # Create button container
+        button_container = tk.Frame(about_page_frame, bg="#242424", height=40)
         button_container.pack(side="bottom", fill="x", padx=20, pady=20)
-        button_container.pack_propagate(False)  # Prevents the container from shrinking to fit the buttons
+        button_container.pack_propagate(False)
 
-    # Create image button
-        # Licence image button
+        # Load button images
         self.licence_img_data = Image.open("application/windows/assets/images/frontend/original/licence.png")
         self.licence_img = CTkImage(dark_image=self.licence_img_data, light_image=self.licence_img_data, size=(15, 15))
         
-        # Donate image button
         self.donate_img_data = Image.open("application/windows/assets/images/frontend/original/donate.png")
         self.donate_img = CTkImage(dark_image=self.donate_img_data, light_image=self.donate_img_data, size=(15, 15))
         
-        # Repository image button
         self.repository_img_data = Image.open("application/windows/assets/images/frontend/original/repository.png")
         self.repository_img = CTkImage(dark_image=self.repository_img_data, light_image=self.repository_img_data, size=(15, 15))
     
-    # Create widget
-        # Create the Licence button at the left side of the button_container
-        self.licence_button = CTkButton(button_container, image=self.licence_img, text="Licence", font=("Arial Bold", 12), fg_color="transparent", border_width=2, border_color="#FFFFFF", text_color="#FFFFFF", hover_color="#000000", corner_radius=0, command=self.licence_button_callback)
-        self.licence_button.pack(side="left", padx=(0, 10), ipady=4)  # Added padding to create space between the buttons
+        # Create footer buttons
+        self.licence_button = CTkButton(button_container, image=self.licence_img, text="Licence",
+                                      font=("Arial Bold", 12), fg_color="transparent",
+                                      border_width=2, border_color="#FFFFFF", text_color="#FFFFFF",
+                                      hover_color="#000000", corner_radius=0,
+                                      command=self.licence_button_callback)
+        self.licence_button.pack(side="left", padx=(0, 10), ipady=4)
 
-        # Create the Donate button to the right of the Licence button
-        self.donate_button = CTkButton(button_container, image=self.donate_img, text="Donate", font=("Arial Bold", 12), fg_color="transparent", border_width=2, border_color="#FFFFFF", text_color="#FFFFFF", hover_color="#000000", corner_radius=0, command=self.donate_button_callback)
-        self.donate_button.pack(side="left", padx=(0, 10), ipady=4)  # This places it immediately to the right of the Licence button
+        self.donate_button = CTkButton(button_container, image=self.donate_img, text="Donate",
+                                     font=("Arial Bold", 12), fg_color="transparent",
+                                     border_width=2, border_color="#FFFFFF", text_color="#FFFFFF",
+                                     hover_color="#000000", corner_radius=0,
+                                     command=self.donate_button_callback)
+        self.donate_button.pack(side="left", padx=(0, 10), ipady=4)
 
-        # Create the Repository button to the right of the Donate button
-        self.repository_button = CTkButton(button_container, image=self.repository_img, text="Repository", font=("Arial Bold", 12), fg_color="transparent", border_width=2, border_color="#FFFFFF", text_color="#FFFFFF", hover_color="#000000", corner_radius=0, command=self.repository_button_callback)
-        self.repository_button.pack(side="left", ipady=4)  # This places it immediately to the right of the Donate button
+        self.repository_button = CTkButton(button_container, image=self.repository_img, text="Repository",
+                                         font=("Arial Bold", 12), fg_color="transparent",
+                                         border_width=2, border_color="#FFFFFF", text_color="#FFFFFF",
+                                         hover_color="#000000", corner_radius=0,
+                                         command=self.repository_button_callback)
+        self.repository_button.pack(side="left", ipady=4)
 
     def licence_button_callback(self):
+        """Create and display license information window"""
         extra_window = tk.Toplevel()
         screen_width = extra_window.winfo_screenwidth()
         screen_height = extra_window.winfo_screenheight()
@@ -330,31 +333,28 @@ class App:
         app_height = 500
         x = (screen_width / 2) - (app_width / 2)
         y = (screen_height / 2) - (app_height / 2)
+        
+        # Configure license window
         extra_window.geometry(f"{app_width}x{app_height}+{int(x)}+{int(y)}")
         extra_window.title("Licence")
         extra_window.resizable(0, 0)
         extra_window.iconbitmap("img/repository.png")
-        # Remove window border (title bar)
         extra_window.overrideredirect(False)
 
-        # Define custom dark mode colors
         background_color = "#242424"    
-
-        # Configure dark mode appearance
         extra_window.configure(bg=background_color)
 
-        # Create and place widgets here
-        # Example:
         label = tk.Label(extra_window, text="Custom Title Bar", bg=background_color, fg="white")
         label.pack(fill="both")
 
     def donate_button_callback(self):
+        """Handle donate button click (placeholder)"""
         print("Donate button clicked")
-        # Define the Donate button click behavior here
 
     def repository_button_callback(self):
+        """Handle repository button click (placeholder)"""
         print("Repository button clicked")
-        # Define the Repository button click behavior here
 
+# Entry point of the application
 if __name__ == "__main__":
     App().app.mainloop()
