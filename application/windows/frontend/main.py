@@ -98,6 +98,74 @@ class App:
         home_page_frame = tk.Frame(self.main_frame, bg="#242424")
         home_page_frame.pack(fill=tk.BOTH, expand=True)
 
+        # Create title label
+        title_label = tk.Label(
+            home_page_frame,
+            text="Welcome to Image Caption Generator",
+            font=("Arial Bold", 24),
+            fg="#FFFFFF",
+            bg="#242424"
+        )
+        title_label.pack(pady=(20, 10))
+
+        # Create documentation text widget
+        doc_text = tk.Text(
+            home_page_frame,
+            font=("Consolas", 12),
+            fg="#FFFFFF",
+            bg="#242424",
+            wrap=tk.WORD,
+            padx=20,
+            pady=10,
+            borderwidth=0,
+            highlightthickness=0
+        )
+        doc_text.pack(fill=tk.BOTH, expand=True, padx=20, pady=(0, 20))
+
+        # Insert documentation content
+        doc_content = """How to Use This Software:
+
+1. Getting Started
+   - Launch the application
+   - Navigate to the "Runner" page using the menu bar at the top
+
+2. Image Selection
+   - Click the "Browse" button to select an image file
+   - Supported formats: PNG and JPG
+   - The selected image will be displayed in the preview area
+   - The file path will be shown in the input field
+
+3. Image Processing
+   - After selecting an image, the "Browse" button changes to "Edit"
+   - The "Disabled" button becomes "OK" and turns green
+   - Click "OK" to process the image and generate a caption
+   - The caption will be displayed below the image
+
+4. Managing Images
+   - Use the "Remove" button to clear the current image
+   - This will reset all buttons to their initial state
+   - You can then select a new image to process
+
+5. Settings
+   - Access the "Settings" page to configure API settings
+   - Note: API settings are currently under construction
+
+6. Additional Information
+   - Visit the "About" page for more details about the project
+   - Check the license information using the "Unlicense" button
+   - Support the project by visiting our GitHub repository
+
+For best results:
+- Use clear, well-lit images
+- Ensure images are not too large (recommended size: under 5MB)
+- Wait for the processing to complete before selecting a new image
+
+__________________________________
+Author: Mohammad Hossein Mohammadi"""
+        
+        doc_text.insert("1.0", doc_content)
+        doc_text.configure(state="disabled")  # Make text read-only
+
 # "Runner" option menu page methods
     def runner_optionMenu_page(self):
         print("Runner Page")
