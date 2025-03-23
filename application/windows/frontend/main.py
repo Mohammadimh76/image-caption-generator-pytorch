@@ -557,7 +557,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 Every star helps us stay motivated and improve the project even more. So, if you think this project is awesome, head over to the link below and show your support!
 
-🔗 GitHub Repository Link
+🔗 GitHub Repository
 
 Thank you for being part of our journey! ❤️"""
         
