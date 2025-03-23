@@ -324,6 +324,78 @@ class App:
         self.repository_button.pack(side="left", ipady=4)  # This places it immediately to the right of the Donate button
 
     def licence_button_callback(self):
+        # Create a new window
+        license_window = tk.Toplevel()
+        
+        # Set window size and position
+        screen_width = license_window.winfo_screenwidth()
+        screen_height = license_window.winfo_screenheight()
+        window_width = 800
+        window_height = 600
+        x = (screen_width / 2) - (window_width / 2)
+        y = (screen_height / 2) - (window_height / 2)
+        license_window.geometry(f"{window_width}x{window_height}+{int(x)}+{int(y)}")
+        license_window.title("The Unlicense")
+        license_window.resizable(0, 0)
+        
+        # Configure window background
+        license_window.configure(bg="#242424")
+        
+        # Create main frame
+        main_frame = tk.Frame(license_window, bg="#242424")
+        main_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
+        
+        # Create title label
+        title_label = tk.Label(
+            main_frame,
+            text="The Unlicense",
+            font=("Arial Bold", 24),
+            fg="#FFFFFF",
+            bg="#242424"
+        )
+        title_label.pack(pady=(0, 20))
+        
+        # Create text widget for license content
+        license_text = tk.Text(
+            main_frame,
+            font=("Consolas", 12),
+            fg="#FFFFFF",
+            bg="#242424",
+            wrap=tk.WORD,
+            padx=10,
+            pady=10,
+            borderwidth=0,
+            highlightthickness=0
+        )
+        license_text.pack(fill=tk.BOTH, expand=True)
+        
+        # Insert license text
+        license_content = """This is free and unencumbered software released into the public domain.
+
+Anyone is free to copy, modify, publish, use, compile, sell, or distribute this software, either in source code form or as a compiled binary, for any purpose, commercial or non-commercial, and by any means.
+
+In jurisdictions that recognize copyright laws, the author or authors of this software dedicate any and all copyright interest in the software to the public domain. We make this dedication for the benefit of the public at large and to the detriment of our heirs and successors. We intend this dedication to be an overt act of relinquishment in perpetuity of all present and future rights to this software under copyright law.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."""
+        
+        license_text.insert("1.0", license_content)
+        license_text.configure(state="disabled")  # Make text read-only
+        
+        # Create close button
+        close_button = CTkButton(
+            main_frame,
+            text="Close",
+            font=("Arial Bold", 12),
+            fg_color="#1E90FF",
+            hover_color="#1873CC",
+            command=license_window.destroy
+        )
+        close_button.pack(pady=(20, 0))
+        
+        # Make window modal
+        license_window.transient(self.app)
+        license_window.grab_set()
+
         extra_window = tk.Toplevel()
         screen_width = extra_window.winfo_screenwidth()
         screen_height = extra_window.winfo_screenheight()
