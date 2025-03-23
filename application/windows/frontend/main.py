@@ -6,6 +6,7 @@ from customtkinter import *
 import tkinter
 from PIL import Image, ImageTk  # type: ignore
 from tkinter import filedialog, messagebox
+import webbrowser  # Add this import at the top
 
 class App:
     def __init__(self):
@@ -353,8 +354,9 @@ class App:
         # Define the Donate button click behavior here
 
     def repository_button_callback(self):
-        print("Repository button clicked")
-        # Define the Repository button click behavior here
+        """Open the repository link in the default web browser"""
+        repository_url = "https://github.com/Mohammadimh76/image-caption-generator-pytorch"  # Replace with your actual repository URL
+        webbrowser.open_new(repository_url)
 
 if __name__ == "__main__":
     App().app.mainloop()
