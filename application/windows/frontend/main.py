@@ -549,31 +549,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         license_window.transient(self.app)
         license_window.grab_set()
 
-        extra_window = tk.Toplevel()
-        screen_width = extra_window.winfo_screenwidth()
-        screen_height = extra_window.winfo_screenheight()
-        app_width = 800
-        app_height = 500
-        x = (screen_width / 2) - (app_width / 2)
-        y = (screen_height / 2) - (app_height / 2)
-        extra_window.geometry(f"{app_width}x{app_height}+{int(x)}+{int(y)}")
-        extra_window.title("Licence")
-        extra_window.resizable(0, 0)
-        extra_window.iconbitmap("img/repository.png")
-        # Remove window border (title bar)
-        extra_window.overrideredirect(False)
-
-        # Define custom dark mode colors
-        background_color = "#242424"    
-
-        # Configure dark mode appearance
-        extra_window.configure(bg=background_color)
-
-        # Create and place widgets here
-        # Example:
-        label = tk.Label(extra_window, text="Custom Title Bar", bg=background_color, fg="white")
-        label.pack(fill="both")
-
     def donate_button_callback(self):
         # Create a new window
         donate_window = tk.Toplevel()
