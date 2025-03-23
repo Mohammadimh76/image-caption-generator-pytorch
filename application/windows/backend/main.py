@@ -29,12 +29,16 @@ from torch import nn  # Neural network modules
 from torch.utils.data import DataLoader, Dataset, random_split  # Data handling utilities
 from torch.nn.utils.rnn import pad_sequence  # Padding sequences for NLP tasks
 
+# Set device to CPU
+device = torch.device('cpu')
+torch.set_num_threads(4)  # Adjust number of CPU threads as needed
+
 # Optimization and loss functions
 from torch import optim  # Optimization algorithms
 from torch.nn import functional as F  # Common loss functions and activation functions
 
 # Evaluation metrics
-from torcheval.metrics import BLEUScore  # BLEU score for evaluating text generation
+from torchmetrics import BLEUScore  # BLEU score for evaluating text generation
 import torchmetrics as tm  # Additional ML metrics for PyTorch
 
 # Progress bar for loops
