@@ -582,7 +582,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         screen_width = donate_window.winfo_screenwidth()
         screen_height = donate_window.winfo_screenheight()
         window_width = 800
-        window_height = 600
+        window_height = 350
         x = (screen_width / 2) - (window_width / 2)
         y = (screen_height / 2) - (window_height / 2)
         donate_window.geometry(f"{window_width}x{window_height}+{int(x)}+{int(y)}")
