@@ -276,22 +276,58 @@ class App:
         settings_page_frame = tk.Frame(self.main_frame, bg="#242424")
         settings_page_frame.pack(fill=tk.BOTH, expand=True)
 
-        # Define the settings text
-        settings_text = ("Customization" +
-                        "\n\n")
+        # Create label for API settings
+        api_label = tk.Label(
+            settings_page_frame,
+            text="API Settings (Under construction)",
+            font=("Arial Bold", 24),
+            fg="#FFFFFF",
+            bg="#242424"
+        )
+        api_label.pack(pady=(20, 10))
 
-        # Create a Text widget for the settings text within the settings_page_frame
-        settings_text_widget = tk.Text(settings_page_frame, font=("Consolas", 24, "bold"), fg="#FFFFFF", bg="#242424",
-                                        wrap="word", borderwidth=0, highlightthickness=0)
-        settings_text_widget.pack(side="top", fill="both", expand=True, padx=20, pady=20)
-        settings_text_widget.insert("1.0", settings_text)
-        settings_text_widget.configure(state="disabled", inactiveselectbackground=settings_text_widget.cget("selectbackground"))
+        # Create container frame for input and button
+        input_container = tk.Frame(settings_page_frame, bg="#242424")
+        input_container.pack(fill="x", padx=20, pady=(0, 20))
 
-        # Create a Checkbutton widget with sample text
-        check_button_var = tk.BooleanVar()
-        check_button = tk.Checkbutton(settings_page_frame, text="Sample Checkbox Text", variable=check_button_var,
-                                    font=("Arial", 14), bg="#242424", fg="#FFFFFF", selectcolor="#242424")
-        check_button.pack(pady=(0, 20))
+        # Create the entry for API key
+        self.api_entry = customtkinter.CTkEntry(
+            input_container,
+            placeholder_text="   Set API Key",
+            font=("Arial Bold", 12),
+            fg_color="#000000",
+            border_width=2,
+            border_color="#FFFFFF",
+            corner_radius=0,
+            height=35,  # Match the height of runner page input
+            state="disabled"  # Set input field to disabled state
+        )
+        self.api_entry.pack(side="left", fill="x", expand=True, padx=(0, 10), ipady=4)
+
+        # Create the Set API button
+        self.set_api_button = customtkinter.CTkButton(
+            input_container,
+            text="Set API",
+            font=("Arial Bold", 12),
+            fg_color="transparent",
+            border_width=2,
+            border_color="#FFFFFF",
+            text_color=("gray10", "#DCE4EE"),  # Gray text for disabled state
+            hover_color="#000000",
+            corner_radius=0,
+            command=self.set_api_callback,
+            state="disabled",  # Set button to disabled state
+            height=35  # Match the height of runner page buttons
+        )
+        self.set_api_button.pack(side="right", padx=(10, 0), ipady=4)
+
+    def set_api_callback(self):
+        api_key = self.api_entry.get()
+        if api_key:
+            print(f"API Key set: {api_key}")
+            # Add your API key handling logic here
+        else:
+            messagebox.showwarning("Warning", "Please enter an API key")
 
 # "About" option menu page methods
     def about_optionMenu_page(self):
