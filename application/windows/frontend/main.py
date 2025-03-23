@@ -102,7 +102,7 @@ class App:
     def runner_optionMenu_page(self):
         print("Runner Page")
 
-    # Create runner page frame
+        # Create runner page frame
         runner_page_frame = tk.Frame(self.main_frame, bg="#242424")
         runner_page_frame.pack(fill=tk.BOTH, expand=True)
 
@@ -110,16 +110,25 @@ class App:
         runner_page_frame.grid_rowconfigure(0, weight=1)  # Makes row 0 expand
         runner_page_frame.grid_columnconfigure(0, weight=1)  # Makes column 0 expand
 
+        # Create image display frame
+        self.image_frame = tk.Frame(runner_page_frame, bg="#242424", width=800, height=400)
+        self.image_frame.grid(row=0, column=0, columnspan=7, padx=20, pady=(20, 10), sticky="nsew")
+        self.image_frame.grid_propagate(False)  # Prevent frame from shrinking
+        
+        # Create label for displaying image
+        self.image_label = tk.Label(self.image_frame, bg="#242424")
+        self.image_label.pack(expand=True, fill="both")
+
     # Create image button
         # Edit image button
         self.edit_img_data = Image.open("application/windows/assets/images/frontend/original/editSquare_icon.png")
         self.edit_img = CTkImage(dark_image=self.edit_img_data, light_image=self.edit_img_data, size=(15, 15))
       
-       # Upload image button
+        # Upload image button
         self.upload_img_data = Image.open("application/windows/assets/images/frontend/original/upload_icon.png")
         self.upload_img = CTkImage(dark_image=self.upload_img_data, light_image=self.upload_img_data, size=(15, 15))
       
-       # Browse image button
+        # Browse image button
         self.browse_img_data = Image.open("application/windows/assets/images/frontend/original/browse_icon.png")
         self.browse_img = CTkImage(dark_image=self.browse_img_data, light_image=self.browse_img_data, size=(15, 15))
 
@@ -136,7 +145,7 @@ class App:
         self.browse_button = customtkinter.CTkButton(runner_page_frame, text="Browse", image=self.browse_img, font=("Arial Bold", 12), fg_color="transparent", border_width=2, border_color="#FFFFFF", text_color="#FFFFFF", hover_color="#000000", corner_radius=0, command=self.browse_button_callback)
         self.browse_button.grid(row=3, column=4, padx=(20, 20), pady=(20, 10),  ipady=4, sticky="nsew")
 
-        # Create the Disabled button # text_color=("gray10", "#DCE4EE")
+        # Create the Disabled button
         self.disabled_button = customtkinter.CTkButton(runner_page_frame, text="Disabled", font=("Arial Bold", 12), state="disabled", fg_color="transparent", border_width=0, border_color="#FFFFFF", text_color=("gray10", "#DCE4EE"), hover_color="#000000", corner_radius=0)
         self.disabled_button.grid(row=3, column=6, padx=(0, 20), pady=(20, 10), ipady=4, sticky="nsew")
         
@@ -144,9 +153,6 @@ class App:
         self.remove_button = customtkinter.CTkButton(runner_page_frame, text="Remove", font=("Arial Bold", 12), fg_color="transparent", border_width=2, text_color=("gray10", "#DCE4EE"), hover_color="#000000", corner_radius=0, command=self.remove_button_callback)
         self.remove_button.grid(row=3, column=5, padx=(20, 10), pady=(20, 10), ipady=4, sticky="nsew")
         self.remove_button.grid_remove()  # Hide the Remove button
-        
-        # Optionally, you can make the button column not expand to ensure the button size is consistent
-        runner_page_frame.grid_columnconfigure(1, weight=0)
 
 # Define Browse button callback
     def browse_button_callback(self):
@@ -161,11 +167,51 @@ class App:
             self.entry_file_path.insert(0, file_path)
             print(f"Selected file: {file_path}")
 
+            # Load and display the image
+            try:
+                # Open the image
+                image = Image.open(file_path)
+                
+                # Calculate the aspect ratio
+                aspect_ratio = image.width / image.height
+                
+                # Set maximum dimensions
+                max_width = 780  # Slightly smaller than frame width
+                max_height = 380  # Slightly smaller than frame height
+                
+                # Calculate new dimensions maintaining aspect ratio
+                if aspect_ratio > 1:
+                    new_width = min(max_width, image.width)
+                    new_height = int(new_width / aspect_ratio)
+                    if new_height > max_height:
+                        new_height = max_height
+                        new_width = int(new_height * aspect_ratio)
+                else:
+                    new_height = min(max_height, image.height)
+                    new_width = int(new_height * aspect_ratio)
+                    if new_width > max_width:
+                        new_width = max_width
+                        new_height = int(new_width / aspect_ratio)
+                
+                # Resize the image
+                image = image.resize((new_width, new_height), Image.Resampling.LANCZOS)
+                
+                # Convert to PhotoImage
+                photo = ImageTk.PhotoImage(image)
+                
+                # Update the image label
+                self.image_label.configure(image=photo)
+                self.image_label.image = photo  # Keep a reference
+                
+            except Exception as e:
+                print(f"Error loading image: {e}")
+                messagebox.showerror("Error", "Failed to load the image")
+
             # Update the Browse button to say "Edit" and change its color
             self.browse_button.configure(text="Edit", fg_color="red", image=self.edit_img)
 
             # Enable the previously disabled button, change its text and color, and assign its command
-            self.disabled_button.configure(state="normal", text="OK", fg_color="green", border_width=2, border_color="#FFFFFF",image=self.upload_img)
+            self.disabled_button.configure(state="normal", text="OK", fg_color="green", border_width=2, border_color="#FFFFFF", image=self.upload_img)
             # Assign the button callback method to the button command
             self.disabled_button.configure(command=self.ok__button_callback)
 
@@ -184,6 +230,9 @@ class App:
         # Clear the file path entry file path
         self.entry_file_path.delete(0, "end")
         self.entry_file_path.configure(placeholder_text="Set File Path Address")
+        
+        # Clear the image display
+        self.image_label.configure(image="")
         
         # Hide the Remove button again
         self.remove_button.grid_remove()  # Hide the Remove button
