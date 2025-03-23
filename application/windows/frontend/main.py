@@ -428,7 +428,7 @@ Author: Mohammad Hossein Mohammadi"""
         about_text_widget.insert("1.0", about_text)
         
         # Add the specified text in red
-        red_text = ("Delevoper: Mohammad Hossein Mohammadi (Frontend)" +
+        red_text = ("Delevoper: Mohammad Hossein Mohammadi" +
                     "\n" +
                     "Collaborators: Mr. Mehdi Kazemi" +
                      "\n" +
