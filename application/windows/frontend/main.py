@@ -298,9 +298,9 @@ class App:
         button_container.pack_propagate(False)  # Prevents the container from shrinking to fit the buttons
 
     # Create image button
-        # Licence image button
-        self.licence_img_data = Image.open("application/windows/assets/images/frontend/original/licence.png")
-        self.licence_img = CTkImage(dark_image=self.licence_img_data, light_image=self.licence_img_data, size=(15, 15))
+        # Unlicence image button
+        self.unlicence_img_data = Image.open("application/windows/assets/images/frontend/original/unlicence.png")
+        self.unlicence_img = CTkImage(dark_image=self.unlicence_img_data, light_image=self.unlicence_img_data, size=(15, 15))
         
         # Donate image button
         self.donate_img_data = Image.open("application/windows/assets/images/frontend/original/donate.png")
@@ -311,9 +311,9 @@ class App:
         self.repository_img = CTkImage(dark_image=self.repository_img_data, light_image=self.repository_img_data, size=(15, 15))
     
     # Create widget
-        # Create the Licence button at the left side of the button_container
-        self.licence_button = CTkButton(button_container, image=self.licence_img, text="Licence", font=("Arial Bold", 12), fg_color="transparent", border_width=2, border_color="#FFFFFF", text_color="#FFFFFF", hover_color="#000000", corner_radius=0, command=self.licence_button_callback)
-        self.licence_button.pack(side="left", padx=(0, 10), ipady=4)  # Added padding to create space between the buttons
+        # Create the Unlicence button at the left side of the button_container
+        self.unlicence_button = CTkButton(button_container, image=self.unlicence_img, text="Unlicence", font=("Arial Bold", 12), fg_color="transparent", border_width=2, border_color="#FFFFFF", text_color="#FFFFFF", hover_color="#000000", corner_radius=0, command=self.unlicence_button_callback)
+        self.unlicence_button.pack(side="left", padx=(0, 10), ipady=4)  # Added padding to create space between the buttons
 
         # Create the Donate button to the right of the Licence button
         self.donate_button = CTkButton(button_container, image=self.donate_img, text="Donate", font=("Arial Bold", 12), fg_color="transparent", border_width=2, border_color="#FFFFFF", text_color="#FFFFFF", hover_color="#000000", corner_radius=0, command=self.donate_button_callback)
@@ -323,7 +323,7 @@ class App:
         self.repository_button = CTkButton(button_container, image=self.repository_img, text="Repository", font=("Arial Bold", 12), fg_color="transparent", border_width=2, border_color="#FFFFFF", text_color="#FFFFFF", hover_color="#000000", corner_radius=0, command=self.repository_button_callback)
         self.repository_button.pack(side="left", ipady=4)  # This places it immediately to the right of the Donate button
 
-    def licence_button_callback(self):
+    def unlicence_button_callback(self):
         # Create a new window
         license_window = tk.Toplevel()
         
