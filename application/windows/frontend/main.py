@@ -28,7 +28,7 @@ class App:
         x = (screen_width / 2) - (app_width / 2)
         y = (screen_height / 2) - (app_height / 2)
         self.app.geometry(f"{app_width}x{app_height}+{int(x)}+{int(y)}")
-        self.app.title("Mohammad Hossein")
+        self.app.title("Alpaca -- v1.0.0")
         self.app.resizable(0, 0)
         set_appearance_mode("dark")  # Set the app theme
         #self.app.iconbitmap("img/logo.ico")  # Change the logo/icon

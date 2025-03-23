@@ -2,6 +2,7 @@
 from tkinter import *
 from PIL import ImageTk, Image
 import time
+from main import App # Import the App class from main.py
 
 class SplashScreen:
     def __init__(self):
@@ -115,9 +116,7 @@ class SplashScreen:
     
     def show_main_window(self):
         """Show the main application window"""
-        main_window = Tk()
-        main_window.title("main window")
-        main_window.mainloop()
-
+        app = App()
+        app.app.mainloop()
 if __name__ == "__main__":
     splash = SplashScreen()
