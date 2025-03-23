@@ -507,8 +507,101 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         label.pack(fill="both")
 
     def donate_button_callback(self):
-        print("Donate button clicked")
-        # Define the Donate button click behavior here
+        # Create a new window
+        donate_window = tk.Toplevel()
+        
+        # Set window size and position
+        screen_width = donate_window.winfo_screenwidth()
+        screen_height = donate_window.winfo_screenheight()
+        window_width = 800
+        window_height = 600
+        x = (screen_width / 2) - (window_width / 2)
+        y = (screen_height / 2) - (window_height / 2)
+        donate_window.geometry(f"{window_width}x{window_height}+{int(x)}+{int(y)}")
+        donate_window.title("Support Our Project")
+        donate_window.resizable(0, 0)
+        
+        # Configure window background
+        donate_window.configure(bg="#242424")
+        
+        # Create main frame
+        main_frame = tk.Frame(donate_window, bg="#242424")
+        main_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
+        
+        # Create title label
+        title_label = tk.Label(
+            main_frame,
+            text="🚀 Support Our Project! 🚀",
+            font=("Arial Bold", 24),
+            fg="#FFFFFF",
+            bg="#242424"
+        )
+        title_label.pack(pady=(0, 20))
+        
+        # Create text widget for donate content
+        donate_text = tk.Text(
+            main_frame,
+            font=("Consolas", 12),
+            fg="#FFFFFF",
+            bg="#242424",
+            wrap=tk.WORD,
+            padx=10,
+            pady=10,
+            borderwidth=0,
+            highlightthickness=0
+        )
+        donate_text.pack(fill=tk.BOTH, expand=True)
+        
+        # Insert donate text
+        donate_content = """If you like our software and find it useful, the best way to support us is by visiting our GitHub repository and giving it a ⭐️ star!
+
+Every star helps us stay motivated and improve the project even more. So, if you think this project is awesome, head over to the link below and show your support!
+
+🔗 GitHub Repository Link
+
+Thank you for being part of our journey! ❤️"""
+        
+        donate_text.insert("1.0", donate_content)
+        
+        # Add clickable link
+        donate_text.tag_add("link", "4.2", "4.25")  # Only tag the "GitHub Repository Link" text
+        donate_text.tag_config("link", foreground="#1E90FF", underline=True)
+        donate_text.tag_bind("link", "<Button-1>", lambda e: webbrowser.open("https://github.com/Mohammadimh76/image-caption-generator-pytorch"))
+        donate_text.tag_bind("link", "<Enter>", lambda e: donate_text.config(cursor="hand2"))
+        donate_text.tag_bind("link", "<Leave>", lambda e: donate_text.config(cursor=""))
+        
+        donate_text.configure(state="disabled")  # Make text read-only
+        
+        # Create repository button
+        repository_button = CTkButton(
+            main_frame,
+            text="Repository",
+            image=self.repository_img,
+            font=("Arial Bold", 12),
+            fg_color="transparent",
+            border_width=2,
+            border_color="#FFFFFF",
+            text_color="#FFFFFF",
+            hover_color="#000000",
+            corner_radius=0,
+            command=lambda: webbrowser.open("https://github.com/Mohammadimh76/image-caption-generator-pytorch")
+        )
+        repository_button.pack(pady=(10, 20))
+        
+        # Create close button
+        close_button = CTkButton(
+            main_frame,
+            text="Close",
+            font=("Arial Bold", 12),
+            fg_color="#1E90FF",
+            hover_color="#1873CC",
+            command=donate_window.destroy
+        )
+        close_button.pack(pady=(0, 0))
+        
+        # Make window modal
+        donate_window.transient(self.app)
+        donate_window.grab_set()
 
     def repository_button_callback(self):
         """Open the repository link in the default web browser"""
