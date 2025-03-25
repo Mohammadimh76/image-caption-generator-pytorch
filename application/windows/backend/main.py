@@ -96,14 +96,14 @@ if wandb_enable:
 
 #Change the font size of the output cells
 from IPython.display import HTML
-shell = get_ipython()
+#shell = get_ipython()
 
-def adjust_font_size():
-  display(HTML('''<style>
-    body {
-      font-size: 24px;
-    }
-  '''))
+#def adjust_font_size():
+#  display(HTML('''<style>
+#    body {
+#      font-size: 24px;
+#    }
+#  '''))
 
-if adjust_font_size not in shell.events.callbacks['pre_execute']:
-  shell.events.register('pre_execute', adjust_font_size)
+#if adjust_font_size not in shell.events.callbacks['pre_execute']:
+#  shell.events.register('pre_execute', adjust_font_size)
