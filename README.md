@@ -304,8 +304,8 @@ Follow these simple steps to install and set up your app. This template is fully
   - [ ] Step 6: Improve the method
   - [ ] Step 7: Apply the solution in practice
   - [ ] Step 8: Document and present the work
-- [ ] Phase (2) - Frontend Development
-  - [ ] Design and implement application windows
+- [x] Phase (2) - Frontend Development
+  - [x] Design and implement application windows
 - [ ] Phase (3) – Wizard Setup + Executable File
 - [ ] Phase (4) – Usability & Software Testing
 
