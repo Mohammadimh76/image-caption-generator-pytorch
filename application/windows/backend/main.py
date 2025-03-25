@@ -81,3 +81,12 @@ def set_seed(seed):
 
       # torch.backends.cudnn.deterministic = True
       # torch.backends.cudnn.benchmark = False
+
+#Section Arguments
+seed = 8
+
+wandb_enable = False
+
+if wandb_enable:
+    wandb_arg_name = input('Please input the WandB argument (run) name:')
+    print(wandb_arg_name)
