@@ -50,6 +50,7 @@ import io
 #device = torch.device('cpu')
 #torch.set_num_threads(4)  # Adjust number of CPU threads as needed
 
+
 #Section Utils
 class AverageMeter(object):
     """Computes and stores the average and current value"""
@@ -82,6 +83,7 @@ def set_seed(seed):
       # torch.backends.cudnn.deterministic = True
       # torch.backends.cudnn.benchmark = False
 
+
 #Section Arguments
 seed = 8
 
@@ -90,3 +92,18 @@ wandb_enable = False
 if wandb_enable:
     wandb_arg_name = input('Please input the WandB argument (run) name:')
     print(wandb_arg_name)
+
+
+#Change the font size of the output cells
+from IPython.display import HTML
+shell = get_ipython()
+
+def adjust_font_size():
+  display(HTML('''<style>
+    body {
+      font-size: 24px;
+    }
+  '''))
+
+if adjust_font_size not in shell.events.callbacks['pre_execute']:
+  shell.events.register('pre_execute', adjust_font_size)
