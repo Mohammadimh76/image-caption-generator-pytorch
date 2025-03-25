@@ -29,10 +29,6 @@ from torch import nn  # Neural network modules
 from torch.utils.data import DataLoader, Dataset, random_split  # Data handling utilities
 from torch.nn.utils.rnn import pad_sequence  # Padding sequences for NLP tasks
 
-# Set device to CPU
-device = torch.device('cpu')
-torch.set_num_threads(4)  # Adjust number of CPU threads as needed
-
 # Optimization and loss functions
 from torch import optim  # Optimization algorithms
 from torch.nn import functional as F  # Common loss functions and activation functions
@@ -50,34 +46,8 @@ from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 import io
 
-#Section: Utils
-class AverageMeter(object):
-    """Computes and stores the average and current value"""
-    def __init__(self):
-        self.reset()
+# Set device to CPU
+#device = torch.device('cpu')
+#torch.set_num_threads(4)  # Adjust number of CPU threads as needed
 
-    def reset(self):
-        self.val = 0
-        self.avg = 0
-        self.sum = 0
-        self.count = 0
 
-    def update(self, val, n=1):
-        self.val = val
-        self.sum += val * n
-        self.count += n
-        self.avg = self.sum / self.count
-
-def num_trainable_params(model):
-  nums = sum(p.numel() for p in model.parameters() if p.requires_grad)/1e6
-  return nums
-
-def set_seed(seed):
-  np.random.seed(seed)
-  torch.manual_seed(seed)
-  if torch.cuda.is_available():
-      torch.cuda.manual_seed(seed)
-      # torch.cuda.manual_seed_all(seed)
-
-      # torch.backends.cudnn.deterministic = True
-      # torch.backends.cudnn.benchmark = False
