@@ -51,7 +51,7 @@ import io
 #torch.set_num_threads(4)  # Adjust number of CPU threads as needed
 
 
-#Section Utils
+#Section --> Utils
 class AverageMeter(object):
     """Computes and stores the average and current value"""
     def __init__(self):
@@ -84,7 +84,7 @@ def set_seed(seed):
       # torch.backends.cudnn.benchmark = False
 
 
-#Section Arguments
+#Section --> Arguments
 seed = 8
 
 wandb_enable = False
@@ -94,7 +94,7 @@ if wandb_enable:
     print(wandb_arg_name)
 
 
-#Change the font size of the output cells
+#Section --> Change the font size of the output cells
 from IPython.display import HTML
 #shell = get_ipython()
 
@@ -107,3 +107,71 @@ from IPython.display import HTML
 
 #if adjust_font_size not in shell.events.callbacks['pre_execute']:
 #  shell.events.register('pre_execute', adjust_font_size)
+
+
+#Section --> Custom dataset
+class Flickr8k(VisionDataset):
+    """
+    Args:
+        root (string): Root directory where images are downloaded to.
+        ann_file (string): Path to annotation file.
+        transform (callable, optional): A function/transform that takes in a PIL image
+            and returns a transformed version. E.g, ``transforms.PILToTensor``
+        target_transform (callable, optional): A function/transform that takes in the
+            target and transforms it.
+    """
+
+    def __init__(
+        self,
+        root: str,
+        ann_file: str,
+        split_file: str,
+        train: bool,
+        transform: Optional[Callable] = None,
+        target_transform: Optional[Callable] = None,
+    ) -> None:
+        super().__init__(root, transform=transform, target_transform=target_transform)
+        self.ann_file = os.path.expanduser(ann_file)
+        self.train = train
+
+        # Read {train/dev/test} files
+        with open(split_file) as f:
+            self.split_samples = f.read().strip().split("\n")
+
+        # Read annotations and store in a dict
+        self.ids, self.captions = [], []
+        with open(self.ann_file) as fh:
+            for line in fh:
+                img_id, caption = line.strip().split("\t")
+                if img_id[:-2] in self.split_samples:
+                    self.ids.append(img_id[:-2])
+                    self.captions.append(caption)
+
+    def __getitem__(self, index: int) -> Tuple[Any, Any]:
+        """
+        Args:
+            index (int): Index
+
+        Returns:
+            tuple: Tuple (image, target). target is a list of captions for the image.
+        """
+        img_id = self.ids[index]
+
+        # Image
+        filename = os.path.join(self.root, img_id)
+        img_raw = Image.open(filename).convert("RGB")
+        if self.transform is not None:
+            img = self.transform(img_raw)
+
+        # Captions
+        caption = self.captions[index]
+        if self.target_transform is not None:
+            target = self.target_transform(caption)
+
+        if self.train:
+            return img, target
+        else:
+          return img, img_raw, caption
+
+    def __len__(self) -> int:
+        return len(self.ids)
