@@ -86,7 +86,22 @@ def set_seed(seed):
 
 #Section --> Arguments
 seed = 8
+
 batch_size = 128
+
+embed_size = 300
+hidden_size = 500
+num_layers = 2
+dropout_embd = 0.5
+dropout_rnn = 0.5
+max_seq_length = 20
+
+clip = 0.25
+
+lr = 0.1
+momentum = 0.9
+wd = 1e-4
+
 wandb_enable = False
 
 if wandb_enable:
@@ -276,4 +291,104 @@ x_batch, y_batch = next(iter(train_loader))
 print(x_batch.shape, y_batch.shape)
 
 
+#Section --> Model
+class EncoderCNN(nn.Module):
+  def __init__(self, embed_size):
+    super(EncoderCNN, self).__init__()
 
+    # Load a pre-trained ResNet model
+    self.resnet = resnet50(weights=ResNet50_Weights.IMAGENET1K_V2)
+    self.resnet.requires_grad_(False)
+    feature_size = self.resnet.fc.in_features
+
+    # Remove the classification layer
+    self.resnet.fc = nn.Identity()
+
+    # Add linear layer to transform extracted features to the embedding size
+    self.linear = nn.Linear(feature_size, embed_size)
+    self.bn = nn.BatchNorm1d(embed_size)
+
+  def forward(self, images):
+    self.resnet.eval()
+    with torch.no_grad():
+      features = self.resnet(images)
+    features = self.bn(self.linear(features))
+    return features
+  
+encoder_temp = EncoderCNN(embed_size=300)
+print(encoder_temp(x_batch).shape)
+
+print(num_trainable_params(encoder_temp))
+
+class DecoderRNN(nn.Module):
+  def __init__(self, embed_size, hidden_size, vocab_size, num_layers, dropout_embd, dropout_rnn, max_seq_length=20):
+    super(DecoderRNN, self).__init__()
+
+    self.embedding = nn.Embedding(vocab_size, embed_size, padding_idx=caption_transform.vocab['<pad>'])
+    self.dropout_embd = nn.Dropout(dropout_embd)
+
+    self.lstm = nn.LSTM(embed_size, hidden_size, num_layers, dropout=dropout_rnn, batch_first=True)
+
+    self.linear = nn.Linear(hidden_size, vocab_size)
+    self.max_seq_length = max_seq_length
+
+    self.init_weights()
+
+  def init_weights(self):
+      self.embedding.weight.data.uniform_(-0.1, 0.1)
+      self.linear.bias.data.fill_(0)
+      self.linear.weight.data.uniform_(-0.1, 0.1)
+
+  def forward(self, features, captions):
+    embeddings = self.dropout_embd(self.embedding(captions[:, :-1]))
+    inputs = torch.cat((features.unsqueeze(1), embeddings), dim=1)
+    outputs, _ = self.lstm(inputs)
+    outputs = self.linear(outputs)
+    return outputs
+
+  def generate(self, features, captions):
+    if len(captions) > 0:
+        embeddings = self.dropout_embd(self.embedding(captions))
+        inputs = torch.cat((features.unsqueeze(1), embeddings), dim=1)
+    else:
+        inputs = features.unsqueeze(1)
+
+    outputs, _ = self.lstm(inputs)
+    outputs = self.linear(outputs)
+    return outputs
+  
+decoder_temp = DecoderRNN(embed_size=300, hidden_size=500,
+                          vocab_size=len(caption_transform.vocab),
+                          num_layers=2,
+                          dropout_embd=0.5,
+                          dropout_rnn=0.5)
+print(decoder_temp)
+
+features_temp = encoder_temp(x_batch)
+
+print(decoder_temp(features_temp, y_batch).shape)
+
+print(num_trainable_params(decoder_temp))
+
+class ImageCaptioning(nn.Module):
+
+  def __init__(self, embed_size, hidden_size, vocab_size, num_layers,
+               dropout_embd, dropout_rnn, max_seq_length=20):
+    super(ImageCaptioning, self).__init__()
+    self.encoder = EncoderCNN(embed_size)
+    self.decoder = DecoderRNN(embed_size, hidden_size, vocab_size, num_layers,
+                              dropout_embd, dropout_rnn, max_seq_length)
+
+  def forward(self, images, captions):
+    features = self.encoder(images)
+    outputs = self.decoder(features, captions)
+    return outputs
+
+  def generate(self, images, captions):
+    features = self.encoder(images)
+    outputs = self.decoder.generate(features, captions)
+    return outputs
+  
+model = ImageCaptioning(300, 500, len(caption_transform.vocab),
+                        2, 0.5, 0.5)
+print(model)
