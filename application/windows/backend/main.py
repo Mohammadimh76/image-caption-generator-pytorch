@@ -175,3 +175,83 @@ class Flickr8k(VisionDataset):
 
     def __len__(self) -> int:
         return len(self.ids)
+    
+class CaptionTransform:
+
+    def __init__(self, caption_file):
+        captions = self._load_captions(caption_file)
+
+        self.tokenizer = get_tokenizer('basic_english')
+        self.vocab = build_vocab_from_iterator(map(self.tokenizer, captions),
+                                               specials=['<pad>', '<unk>', '<sos>', '<eos>'])
+        self.vocab.set_default_index(self.vocab['<unk>'])
+
+        torch.save(self.vocab, 'vocab.pt')
+
+    def __call__(self, caption):
+        indices = self.vocab(self.tokenizer(caption))
+        indices = self.vocab(['<sos>']) + indices + self.vocab(['<eos>'])
+        target = torch.LongTensor(indices)
+        return target
+
+    def __repr__(self):
+        return f"""CaptionTransform([
+          _load_captions(),
+          toknizer('basic_english'),
+          vocab(vocab_size={len(self.vocab)})
+          ])
+          """
+
+    def _load_captions(self, caption_file):
+        captions = []
+        with open(caption_file) as f:
+            for line in f:
+                _, caption = line.strip().split("\t")
+                captions.append(caption)
+        return captions
+    
+caption_transform = CaptionTransform('D:/EmKay/data/Flickr8k.token.txt')
+print(caption_transform)
+print(len(caption_transform.vocab))
+caption_transform('how are you')
+
+transform = transforms.Compose([transforms.ToTensor()])
+
+dataset = Flickr8k('D:/EmKay/data/Flickr8k_Dataset',
+                   'D:/EmKay/data/Flickr8k.token.txt',
+                   'D:/EmKay/data/Flickr_8k.trainImages.txt',
+                   train=True,
+                   transform=transform,
+                   target_transform=caption_transform)
+
+print(dataset)
+
+img, caption = dataset[50]
+print(caption)
+print(img)
+
+train_transform = transforms.Compose([
+    transforms.Resize((256, 256)),
+    transforms.CenterCrop(224),
+    transforms.ToTensor(),
+    transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))
+])
+
+eval_transform = transforms.Compose([
+    transforms.Resize((224, 224)),
+    transforms.ToTensor(),
+    transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))
+])
+
+root = 'D:/EmKay/data/Flickr8k_Dataset'
+ann_file = 'D:/EmKay/data/Flickr8k.token.txt'
+split_file = lambda phase: f'D:/EmKay/data/Flickr_8k.{phase}Images.txt'
+
+caption_transform = CaptionTransform(ann_file)
+
+train_set = Flickr8k(root, ann_file, split_file('train'), True, train_transform, caption_transform)
+valid_set = Flickr8k(root, ann_file, split_file('dev'), True, eval_transform, caption_transform)
+test_set = Flickr8k(root, ann_file, split_file('test'), False, eval_transform, caption_transform)
+
+print(len(train_set), len(valid_set), len(test_set))
+
