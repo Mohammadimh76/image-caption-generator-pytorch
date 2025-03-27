@@ -86,7 +86,7 @@ def set_seed(seed):
 
 #Section --> Arguments
 seed = 8
-
+batch_size = 128
 wandb_enable = False
 
 if wandb_enable:
@@ -254,4 +254,26 @@ valid_set = Flickr8k(root, ann_file, split_file('dev'), True, eval_transform, ca
 test_set = Flickr8k(root, ann_file, split_file('test'), False, eval_transform, caption_transform)
 
 print(len(train_set), len(valid_set), len(test_set))
+
+
+# Section --> DataLoader
+def collate_fn(batch):
+  if len(batch[0]) == 2:
+      x_batch, y_batch = zip(*batch)
+      x_batch = torch.stack(x_batch)
+      y_batch = pad_sequence(y_batch, batch_first=True, padding_value=caption_transform.vocab['<pad>'])
+      return x_batch, y_batch
+  else:
+    x_batch, x_raw, captions = zip(*batch)
+    x_batch = torch.stack(x_batch)
+    return x_batch, x_raw, captions
+  
+train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True, collate_fn=collate_fn)
+valid_loader = DataLoader(valid_set, batch_size=batch_size*2, collate_fn=collate_fn)
+test_loader = DataLoader(test_set, batch_size=batch_size*2, collate_fn=collate_fn)
+
+x_batch, y_batch = next(iter(train_loader))
+print(x_batch.shape, y_batch.shape)
+
+
 
