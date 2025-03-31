@@ -46,10 +46,6 @@ from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 import io
 
-# Set device to CPU
-#device = torch.device('cpu')
-#torch.set_num_threads(4)  # Adjust number of CPU threads as needed
-
 
 #Section --> Utils
 class AverageMeter(object):
@@ -201,7 +197,7 @@ class CaptionTransform:
                                                specials=['<pad>', '<unk>', '<sos>', '<eos>'])
         self.vocab.set_default_index(self.vocab['<unk>'])
 
-        torch.save(self.vocab, 'vocab.pt')
+        torch.save(self.vocab, 'D:/EmKay/ImageCaptioning/image-caption-generator-pytorch/application/windows/backend/ptFiles/vocab.pt')
 
     def __call__(self, caption):
         indices = self.vocab(self.tokenizer(caption))
@@ -286,6 +282,10 @@ def collate_fn(batch):
 train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True, collate_fn=collate_fn)
 valid_loader = DataLoader(valid_set, batch_size=batch_size*2, collate_fn=collate_fn)
 test_loader = DataLoader(test_set, batch_size=batch_size*2, collate_fn=collate_fn)
+
+torch.save(train_loader, 'D:/EmKay/ImageCaptioning/image-caption-generator-pytorch/application/windows/backend/ptFiles/train.pt')
+torch.save(valid_loader, 'D:/EmKay/ImageCaptioning/image-caption-generator-pytorch/application/windows/backend/ptFiles/valid.pt')
+torch.save(test_loader, 'D:/EmKay/ImageCaptioning/image-caption-generator-pytorch/application/windows/backend/ptFiles/test.pt')
 
 x_batch, y_batch = next(iter(train_loader))
 print(x_batch.shape, y_batch.shape)
@@ -392,3 +392,300 @@ class ImageCaptioning(nn.Module):
 model = ImageCaptioning(300, 500, len(caption_transform.vocab),
                         2, 0.5, 0.5)
 print(model)
+
+
+#Section --> Config
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
+print(device)
+
+loss_fn = nn.CrossEntropyLoss(ignore_index=caption_transform.vocab['<pad>'])
+
+metric = None
+
+if wandb_enable:
+    key_file = '/content/key'
+
+    if os.path.exists(key_file):
+        with open(key_file) as f:
+            key = f.readline().strip()
+        wandb.login(key=key)
+    else:
+        print("Key file does not exist. Please create the key file with your wandb API key.")
+
+
+#Section --> Training
+def train_one_epoch(model, train_loader, loss_fn, optimizer, metric, epoch=None):
+  model.train()
+  loss_train = AverageMeter()
+  if metric: metric.reset()
+
+  with tqdm.tqdm(train_loader, unit='batch') as tepoch:
+    for inputs, targets in tepoch:
+      if epoch:
+        tepoch.set_description(f'Epoch {epoch}')
+
+      inputs = inputs.to(device)
+      targets = targets.to(device)
+
+      outputs = model(inputs, targets)
+
+      loss = loss_fn(outputs.reshape(-1, outputs.shape[-1]), targets.flatten())
+
+      nn.utils.clip_grad.clip_grad_norm_(model.parameters(), max_norm=clip)
+
+      loss.backward()
+
+      optimizer.step()
+      optimizer.zero_grad()
+
+      loss_train.update(loss.item(), n=len(targets))
+      if metric:
+        metric.update(outputs, targets)
+        metric_train_val = metric.compute().item()
+      else:
+        metric_train_val = None
+
+      tepoch.set_postfix(loss=loss_train.avg, metric=metric_train_val)
+
+    return model, loss_train.avg, metric_train_val
+
+
+#Section --> Evaluation
+def evaluate(model, test_loader, loss_fn, metric):
+  model.eval()
+  loss_eval = AverageMeter()
+  if metric: metric.reset()
+
+  with torch.inference_mode():
+    for inputs, targets in test_loader:
+      inputs = inputs.to(device)
+      targets = targets.to(device)
+
+      outputs = model(inputs, targets)
+
+      loss = loss_fn(outputs.reshape(-1, outputs.shape[-1]), targets.flatten())
+      loss_eval.update(loss.item(), n=len(targets))
+
+      if metric: metric(outputs, targets)
+
+  return loss_eval.avg, metric.compute().item() if metric else None
+
+
+#Section --> Training Process
+
+#Subsection: Finding Hyper-parameters
+
+#Step 1: Calculate the loss for an untrained model using a few batches.
+model = ImageCaptioning(embed_size, hidden_size, len(caption_transform.vocab), num_layers,
+                        dropout_embd, dropout_rnn, max_seq_length).to(device)
+
+inputs, targets = next(iter(train_loader))
+inputs = inputs.to(device)
+targets = targets.to(device)
+
+with torch.no_grad():
+  outputs = model(inputs, targets)
+  loss = loss_fn(outputs.reshape(-1, outputs.shape[-1]), targets.flatten())
+
+print(loss)
+
+#Step 2: Try to train and overfit the model on a small subset of the dataset.
+model = ImageCaptioning(embed_size, hidden_size, len(caption_transform.vocab), num_layers,
+                        dropout_embd, dropout_rnn, max_seq_length).to(device)
+
+optimizer = torch.optim.SGD(model.parameters(), lr=lr, momentum=momentum)
+
+mini_train_size = 1000
+_, mini_train_dataset = random_split(train_set, (len(train_set)-mini_train_size, mini_train_size))
+mini_train_loader = DataLoader(mini_train_dataset, 20, collate_fn=collate_fn)
+
+num_epochs = 100
+for epoch in range(num_epochs):
+  model, _, _ = train_one_epoch(model, mini_train_loader, loss_fn, optimizer, None, epoch)
+
+#Step 3: Train the model for a limited number of epochs, experimenting with various learning rates.
+num_epochs = 1
+
+for lr in [0.9, 0.5, 0.125, 0.005]:
+  print(f'LR={lr}')
+
+  model = ImageCaptioning(embed_size, hidden_size, len(caption_transform.vocab), num_layers,
+                          dropout_embd, dropout_rnn, max_seq_length).to(device)
+  model = torch.load('D:/EmKay/ImageCaptioning/image-caption-generator-pytorch/application/windows/backend/ptFiles/model.pt')
+  optimizer = optim.SGD(model.parameters(), lr=lr, weight_decay=wd, momentum=momentum)
+
+  for epoch in range(num_epochs):
+    model, _, _ = train_one_epoch(model, train_loader, loss_fn, optimizer, None, epoch+1)
+
+  print()
+
+#Step 4: Create a small grid using the weight decay and the best learning rate.
+num_epochs = 2
+
+for lr in [1.25]:
+  for wd in [1e-4, 1e-5, 1e-6, 0]:
+    print(f'LR={lr}, WD={wd}')
+
+    model = ImageCaptioning(embed_size, hidden_size, len(caption_transform.vocab), num_layers,
+                            dropout_embd, dropout_rnn, max_seq_length).to(device)
+    optimizer = optim.SGD(model.parameters(), lr=lr, weight_decay=wd, momentum=momentum)
+
+    for epoch in range(num_epochs):
+      model, loss, _ = train_one_epoch(model, train_loader, loss_fn, optimizer, None, epoch+1)
+
+    print()
+
+#Subsection: Main Loop
+
+#Define train dataloader.
+set_seed(seed)
+train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True, collate_fn=collate_fn)
+
+from time import time
+import multiprocessing as mp
+
+for num_workers in range(0, mp.cpu_count()+1, 2):
+    train_loader = DataLoader(train_set, batch_size=128, shuffle=True, collate_fn=collate_fn,
+                              num_workers=num_workers, pin_memory=True)
+    print('-'*10)
+    start = time()
+    for i, data in enumerate(train_loader, num_workers):
+        pass
+    end = time()
+    print("Finish with:{} second, num_workers={}".format(end - start, num_workers))
+
+#Define model.
+set_seed(seed)
+model = ImageCaptioning(embed_size, hidden_size, len(caption_transform.vocab), num_layers,
+                        dropout_embd, dropout_rnn, max_seq_length).to(device)
+model = torch.load('D:/EmKay/ImageCaptioning/image-caption-generator-pytorch/application/windows/backend/ptFiles/model.pt')
+
+#Define optimizer and Set learning rate and weight decay.
+set_seed(seed)
+lr = 0.125
+wd = 1e-4
+optimizer = optim.SGD(model.parameters(), lr=lr, weight_decay=wd, momentum=momentum)
+
+#Initialize `wandb`
+if wandb_enable:
+  wandb.init(
+      project='image-captioning',
+      name=wandb_arg_name,
+      config={
+          'lr': lr,
+          'momentum': momentum,
+          'batch_size': batch_size,
+          'seq_len': seq_len,
+          'hidden_dim': hidden_dim,
+          'embedding_dim': embedding_dim,
+          'num_layers': num_layers,
+          'dropout_embed': dropoute,
+          'dropout_in_lstm': dropouti,
+          'dropout_h_lstm': dropouth,
+          'dropout_out_lstm': dropouto,
+          'clip': clip,
+      }
+  )
+
+#Write code to train the model for `num_epochs` epoches.
+loss_train_hist = []
+loss_valid_hist = []
+
+metric_train_hist = []
+metric_valid_hist = []
+
+best_loss_valid = torch.inf
+epoch_counter = 0
+
+num_epochs = 10
+
+for epoch in range(num_epochs):
+  # Train
+  model, loss_train, metric_train = train_one_epoch(model,
+                                                 train_loader,
+                                                 loss_fn,
+                                                 optimizer,
+                                                 metric,
+                                                 epoch+1)
+  # Validation
+  loss_valid, metric_valid = evaluate(model,
+                                     valid_loader,
+                                     loss_fn,
+                                     metric)
+
+  loss_train_hist.append(loss_train)
+  loss_valid_hist.append(loss_valid)
+
+  metric_train_hist.append(metric_train)
+  metric_valid_hist.append(metric_valid)
+
+  if loss_valid < best_loss_valid:
+    torch.save(model, f'D:/EmKay/ImageCaptioning/image-caption-generator-pytorch/application/windows/backend/ptFiles/model.pt')
+    best_loss_valid = loss_valid
+    print('Model Saved!')
+
+  print(f'Valid: Loss = {loss_valid:.4}, Metric = None')
+  print()
+
+  if wandb_enable:
+    wandb.log({"metric_train": metric_train, "loss_train": loss_train,
+                "metric_valid": metric_valid, "loss_valid": loss_valid})
+
+  epoch_counter += 1
+
+if wandb_enable:
+  wandb.finish()
+
+#Subsection: Plot
+
+#Plot learning curves
+plt.figure(figsize=(8, 6))
+
+plt.plot(range(epoch_counter), loss_train_hist, 'r-', label='Train')
+plt.plot(range(epoch_counter), loss_valid_hist, 'b-', label='Validation')
+
+plt.xlabel('Epoch')
+plt.ylabel('loss')
+plt.grid(True)
+plt.legend()
+
+
+#Section --> Caption
+model_path = 'D:/EmKay/ImageCaptioning/image-caption-generator-pytorch/application/windows/backend/ptFiles/model.pt'
+model = torch.load(model_path)
+model.eval()
+print()
+
+def generate(image, model, vocab, max_seq_len, device):
+  image = image.to(device)
+  src, indices = [], []
+
+  caption = ''
+  itos = vocab.get_itos()
+
+  for i in range(max_seq_len):
+    with torch.no_grad():
+      predictions = model.generate(image, src)
+
+    idx = predictions[:, -1, :].argmax(1)
+    token = itos[idx]
+
+    caption += token + ' '
+    if idx == vocab['<eos>']:
+      break
+
+    indices.append(idx)
+    src = torch.LongTensor([indices]).to(device)
+
+  return caption.replace('<sos> ', '').replace(' <eos>', '').capitalize()
+
+test_set_generate = Flickr8k(root, ann_file, split_file('test'), False, eval_transform, caption_transform)
+
+idx = torch.randint(0, len(test_set_generate), (1,)).item()
+image, image_raw, target = test_set_generate[30]
+
+caption = generate(image.unsqueeze(0), model, caption_transform.vocab, 20, device)
+
+print('Target: ', target)
+print('Model:', caption)
+image_raw.show()
