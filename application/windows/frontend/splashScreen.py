@@ -1,86 +1,131 @@
-# Import required libraries
+from abc import ABC, abstractmethod
 from tkinter import *
 from PIL import ImageTk, Image
 import time
-from main import App # Import the App class from main.py
+from main import App
 
-class SplashScreen:
+class WindowConfig:
+    """Configuration class for window properties"""
     def __init__(self):
-        self.window = Tk()
         self.width = 400
         self.height = 220
         self.logo_width = 156
         self.logo_height = 46
+        self.background_color = '#272727'
+        self.text_color = 'white'
+
+class Animation(ABC):
+    """Abstract base class for animations"""
+    @abstractmethod
+    def run(self):
+        pass
+
+class LoadingAnimation(Animation):
+    """Concrete implementation of loading animation"""
+    def __init__(self, window, circle_positions, image_on, image_off):
+        self.window = window
+        self.circle_positions = circle_positions
+        self.image_on = image_on
+        self.image_off = image_off
+
+    def run(self):
+        for _ in range(3):
+            for active_pos in self.circle_positions:
+                for pos in self.circle_positions:
+                    self._create_circle(pos, self.image_on if pos == active_pos else self.image_off)
+                self.window.root.update()
+                time.sleep(0.3)
+
+    def _create_circle(self, x_offset, image):
+        x = ((self.window.config.width - self.window.config.logo_width) / 2) + x_offset
+        y = ((self.window.config.height - self.window.config.logo_height) / 2) + self.window.config.logo_height + 5
+        return Label(self.window.root, image=image, border=0, relief=SUNKEN).place(x=x, y=y)
+
+class UIComponent:
+    """Base class for UI components"""
+    def __init__(self, window):
+        self.window = window
+
+class Background(UIComponent):
+    """Background frame component"""
+    def create(self):
+        Frame(self.window.root, 
+              width=self.window.config.width, 
+              height=self.window.config.height, 
+              bg=self.window.config.background_color).place(x=0, y=0)
+
+class Logo(UIComponent):
+    """Logo component"""
+    def create(self):
+        self.text = Label(self.window.root, 
+                         text="ALPACA", 
+                         fg=self.window.config.text_color, 
+                         bg=self.window.config.background_color)
+        self.text.configure(font=("Game Of Squids", 24, "bold"))
         
+        x = (self.window.config.width - self.window.config.logo_width) / 2
+        y = (self.window.config.height - self.window.config.logo_height) / 2
+        self.text.place(x=x, y=y)
+
+class LoadingText(UIComponent):
+    """Loading text component"""
+    def create(self):
+        text = Label(self.window.root, 
+                    text="Loading...", 
+                    fg=self.window.config.text_color, 
+                    bg=self.window.config.background_color)
+        text.configure(font=("Calibri", 11))
+        text.place(x=20, y=180)
+
+class SplashScreen:
+    """Main splash screen class"""
+    def __init__(self):
+        self.config = WindowConfig()
+        self.root = Tk()
         self._initialize_window()
         self._create_ui()
         self._run_animation()
         self._cleanup_and_show_main()
-        self.window.mainloop()
+        self.root.mainloop()
     
     def _initialize_window(self):
         """Initialize window properties and position"""
-        self.window.overrideredirect(1)
+        self.root.overrideredirect(1)
         self._center_window()
     
     def _center_window(self):
         """Center the window on the screen"""
-        screen_width = self.window.winfo_screenwidth()
-        screen_height = self.window.winfo_screenheight()
-        x = int((screen_width/2) - (self.width/2))
-        y = int((screen_height/2) - (self.height/2))
-        self.window.geometry(f"{self.width}x{self.height}+{x}+{y}")
+        screen_width = self.root.winfo_screenwidth()
+        screen_height = self.root.winfo_screenheight()
+        x = int((screen_width/2) - (self.config.width/2))
+        y = int((screen_height/2) - (self.config.height/2))
+        self.root.geometry(f"{self.config.width}x{self.config.height}+{x}+{y}")
     
     def _create_ui(self):
         """Create all UI elements"""
-        self._create_background()
-        self._create_logo()
-        self._create_loading_text()
+        Background(self).create()
+        Logo(self).create()
+        LoadingText(self).create()
         self._load_animation_images()
-    
-    def _create_background(self):
-        """Create the main background frame"""
-        Frame(self.window, width=self.width, height=self.height, bg='#272727').place(x=0, y=0)
-    
-    def _create_logo(self):
-        """Create and position the ALPACA logo"""
-        self.logo_text = Label(self.window, text="ALPACA", fg="white", bg='#272727')
-        self.logo_text.configure(font=("Game Of Squids", 24, "bold"))
-        
-        x = (self.width - self.logo_width) / 2
-        y = (self.height - self.logo_height) / 2
-        self.logo_text.place(x=x, y=y)
-    
-    def _create_loading_text(self):
-        """Create the loading text at the bottom"""
-        loading_text = Label(self.window, text="Loading...", fg="white", bg='#272727')
-        loading_text.configure(font=("Calibri", 11))
-        loading_text.place(x=20, y=180)
     
     def _load_animation_images(self):
         """Load the circle animation images"""
         self.image_off = ImageTk.PhotoImage(Image.open("application/windows/assets/images/frontend/splash/c2_off.png"))
         self.image_on = ImageTk.PhotoImage(Image.open("application/windows/assets/images/frontend/splash/c1_on.png"))
     
-    def _create_circle(self, x_offset, image):
-        """Create a circle at the specified x-offset from the logo"""
-        x = ((self.width - self.logo_width) / 2) + x_offset
-        y = ((self.height - self.logo_height) / 2) + self.logo_height + 5
-        return Label(self.window, image=image, border=0, relief=SUNKEN).place(x=x, y=y)
-    
     def _run_animation(self):
         """Run the loading animation sequence"""
-        circle_positions = [45, 65, 85, 105]
-        for _ in range(3):
-            for active_pos in circle_positions:
-                for pos in circle_positions:
-                    self._create_circle(pos, self.image_on if pos == active_pos else self.image_off)
-                self.window.update()
-                time.sleep(0.3)
+        animation = LoadingAnimation(
+            self,
+            circle_positions=[45, 65, 85, 105],
+            image_on=self.image_on,
+            image_off=self.image_off
+        )
+        animation.run()
     
     def _cleanup_and_show_main(self):
         """Clean up splash screen and show main application"""
-        self.window.destroy()
+        self.root.destroy()
         app = App()
         app.app.mainloop()
 
