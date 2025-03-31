@@ -8,6 +8,135 @@ from PIL import Image, ImageTk  # type: ignore
 from tkinter import filedialog, messagebox
 import webbrowser  # Add this import at the top
 
+
+import numpy as np
+import time
+import cv2
+import torch
+import torch.nn as nn
+import torchvision.transforms as TT
+from torchvision.transforms import functional as TF
+from torchvision.models import resnet50, ResNet50_Weights
+from torchtext.data.utils import get_tokenizer
+
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
+model = 'D:/EmKay/ImageCaptioning/image-caption-generator-pytorch/application/windows/backend/ptFiles/model.pt'
+vocab = torch.load('D:/EmKay/ImageCaptioning/image-caption-generator-pytorch/application/windows/backend/ptFiles/vocab.pt')
+tokenizer = get_tokenizer('basic_english')
+embed_size=256
+hidden_size=512
+num_layers = 2
+dropout_embd = 0.5
+dropout_rnn = 0.5
+
+class Encoder(nn.Module):
+  def __init__(self, embed_size):
+    super().__init__()
+    self.resnet = resnet50(weights=ResNet50_Weights.IMAGENET1K_V2)
+    self.resnet.requires_grad_(False)
+    feature_size = self.resnet.fc.in_features
+
+    self.resnet.fc = nn.Identity()
+    self.fc = nn.Linear(feature_size, embed_size)
+    self.bn = nn.BatchNorm1d(embed_size)
+
+  def forward(self, x):
+    self.resnet.eval()
+    with torch.no_grad():
+      features = self.resnet(x)
+    y = self.bn(self.fc(features))
+    return y
+  
+class Decoder(nn.Module):
+  def __init__(self, embed_size, hidden_size, vocab_size, num_layers, dropout_embd, dropout_rnn, max_seq_length=20):
+    super(Decoder, self).__init__()
+
+    self.embedding = nn.Embedding(vocab_size, embed_size, padding_idx=vocab['<pad>'])
+    self.dropout_embd = nn.Dropout(dropout_embd)
+
+    self.lstm = nn.LSTM(embed_size, hidden_size, num_layers, dropout=dropout_rnn, batch_first=True)
+
+    self.linear = nn.Linear(hidden_size, vocab_size)
+
+    self.max_seq_length = max_seq_length
+
+  def init_weights(self):
+    self.embedding.weight.data.uniform_(-0.1, 0.1)
+    self.linear.bias.data.fill_(0)
+    self.linear.weight.data.uniform_(-0.1, 0.1)
+
+  def forward(self, features, captions):
+    embeddings = self.dropout_embd(self.embedding(captions[:, :-1]))
+    inputs = torch.cat((features.unsqueeze(1), embeddings), dim=1)
+    outputs, _ = self.lstm(inputs)
+    outputs = self.linear(outputs)
+    return outputs
+
+  def generate(self, features, captions):
+    if len(captions)!=0:
+      embeddings = self.dropout_embd(self.embedding(captions))
+      inputs = torch.cat((features.unsqueeze(1), embeddings), dim=1)
+    else:
+      inputs = features.unsqueeze(1)
+    outputs, _ = self.lstm(inputs)
+    outputs = self.linear(outputs)
+    return outputs
+
+
+class ImageCaptioning(nn.Module):
+  def __init__(self, embed_size, hidden_size, vocab_size, num_layers, dropout_embd, dropout_rnn, max_seq_length=20):
+    super(ImageCaptioning, self).__init__()
+    self.encoder = Encoder(embed_size)
+    self.decoder = Decoder(embed_size, hidden_size, vocab_size, num_layers, dropout_embd, dropout_rnn, max_seq_length)
+
+  def forward(self, images, captions):
+    features = self.encoder(images)
+    output = self.decoder(features, captions)
+    return output
+
+  def generate(self, images, captions):
+    features = self.encoder(images)
+    output = self.decoder.generate(features, captions)
+    return output
+  
+
+def generate(image, transform, model_path, vocab, max_seq_length, device):
+    img_array = np.frombuffer(image, dtype=np.uint8)
+    image_ = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
+    model = torch.load(model_path, map_location=torch.device(device))
+    model.eval()
+    image_transformed = transform(TF.to_pil_image(image_)).unsqueeze(0)
+    image = image_transformed.to(device)
+    src, indices = [], []
+
+    caption = ''
+    itos = vocab.get_itos()
+
+    for i in range(max_seq_length):
+        with torch.no_grad():
+            predictions = model.generate(image, src)
+
+        idx = predictions[:, -1, :].argmax(1)
+        token = itos[idx]
+        caption += token + ' '
+
+        if idx == vocab['<eos>']:
+            break
+
+        indices.append(idx)
+        src = torch.LongTensor([indices]).to(device)
+
+    return caption
+
+
+ImageCaptioning(embed_size, hidden_size, len(vocab), num_layers, dropout_embd, dropout_rnn, 20)
+
+test_transform = TT.Compose([TT.Resize((224, 224)),
+                TT.ToTensor(),
+                TT.Normalize(mean=[0.485, 0.456, 0.406],
+                            std=[0.229, 0.224, 0.225])])
+
+
 class App:
     def __init__(self):
         self.app = CTk()
@@ -230,6 +359,7 @@ Author: Mohammad Hossein Mohammadi"""
         file_path = filedialog.askopenfilename(title="Select File", filetypes=[("Image Files", "*.png;*.jpg")])
 
         if file_path:
+
             # Update the entry file path widget with the selected file path
             self.entry_file_path.delete(0, "end")
             self.entry_file_path.insert(0, file_path)
@@ -270,7 +400,24 @@ Author: Mohammad Hossein Mohammadi"""
                 # Update the image label
                 self.image_label.configure(image=photo)
                 self.image_label.image = photo  # Keep a reference
-                
+
+                # Remove any existing path label
+                runner_frame = self.main_frame.winfo_children()[0]  # Get the runner page frame
+                for widget in runner_frame.winfo_children():
+                    if isinstance(widget, tk.Label) and widget.cget("text").startswith("Image Path:"):
+                        widget.destroy()
+                '''
+                # Create a label to display the file path
+                path_label = tk.Label(
+                    runner_frame,
+                    text=f"Image Path: {file_path}",
+                    font=("Arial", 10),
+                    fg="#FFFFFF",
+                    bg="#242424",
+                    wraplength=780  # Wrap text to fit within the frame width
+                )
+                path_label.grid(row=1, column=0, columnspan=7, padx=20, pady=(0, 20), sticky="nsew")
+                '''
             except Exception as e:
                 print(f"Error loading image: {e}")
                 messagebox.showerror("Error", "Failed to load the image")
@@ -302,17 +449,51 @@ Author: Mohammad Hossein Mohammadi"""
         # Clear the image display
         self.image_label.configure(image="")
         
+        # Remove the path label and caption label if they exist
+        runner_frame = self.main_frame.winfo_children()[0]  # Get the runner page frame
+        for widget in runner_frame.winfo_children():
+            if isinstance(widget, tk.Label) and (widget.cget("text").startswith("Image Path:") or widget.cget("text").startswith("Caption:")):
+                widget.destroy()
+        
         # Hide the Remove button again
         self.remove_button.grid_remove()  # Hide the Remove button
 
 # Define Ok button callback
     def ok__button_callback(self):
         print("OK button clicked")
+        
+        try:
+            # Get the file path from the entry field
+            file_path = self.entry_file_path.get()
             
-        #dialog = customtkinter.CTkInputDialog(text="Type in a number:", title="Alert!")
-        #center_dialog(dialog)
+            # Read the image file as bytes
+            with open(file_path, 'rb') as f:
+                image_bytes = f.read()
             
-        #text = dialog.get_input()  # waits for input
+            # Generate caption using the image bytes
+            caption_result = generate(image_bytes, test_transform, model, vocab, 20, device)[5:-6]
+            print("Caption Result: ", caption_result)
+            
+            # Remove any existing caption label
+            runner_frame = self.main_frame.winfo_children()[0]  # Get the runner page frame
+            for widget in runner_frame.winfo_children():
+                if isinstance(widget, tk.Label) and widget.cget("text").startswith("Caption:"):
+                    widget.destroy()
+            
+            # Create a label to display the caption
+            caption_label = tk.Label(
+                runner_frame,
+                text=f"Caption: {caption_result}",
+                font=("Arial", 18),
+                fg="#FFFFFF",
+                bg="#242424",
+                wraplength=780  # Wrap text to fit within the frame width
+            )
+            caption_label.grid(row=2, column=0, columnspan=7, padx=20, pady=(0, 20), sticky="nsew")
+            
+        except Exception as e:
+            print(f"Error generating caption: {e}")
+            messagebox.showerror("Error", "Failed to generate caption for the image")
 
 # "Config" option menu page methods
     def config_optionMenu_page(self):
