@@ -6,117 +6,83 @@ from main import App # Import the App class from main.py
 
 class SplashScreen:
     def __init__(self):
-        # Initialize main window
         self.window = Tk()
-        
-        # Window configuration
         self.width = 400
         self.height = 220
-        self.setup_window_position()
-        self.window.overrideredirect(1)  # Hide title bar
-        
-        # Create UI elements
-        self.create_background()
-        self.create_logo()
-        self.create_loading_text()
-        self.load_animation_images()
-        
-        # Run animation
-        self.run_loading_animation()
-        
-        # Clean up and show main window
-        self.window.destroy()
-        self.show_main_window()
-        self.window.mainloop()
-    
-    def setup_window_position(self):
-        """Set up the window position on screen"""
-        screen_width = self.window.winfo_screenwidth()
-        screen_height = self.window.winfo_screenheight()
-        x_coordinate = (screen_width/2) - (self.width/2)
-        y_coordinate = (screen_height/2) - (self.height/2)
-        self.window.geometry("%dx%d+%d+%d" % (self.width, self.height, x_coordinate, y_coordinate))
-    
-    def create_background(self):
-        """Create the background frame"""
-        Frame(self.window, width=self.width, height=self.height, bg='#272727').place(x=0, y=0)
-    
-    def create_logo(self):
-        """Create and position the logo text"""
-        self.logo_text = Label(self.window, text="ALPACA", fg="white", bg='#272727')
-        self.logo_text.configure(font=("Game Of Squids", 24, "bold"))
-        
-        # Logo dimensions
         self.logo_width = 156
         self.logo_height = 46
         
-        # Center the logo
-        self.logo_text.place(
-            x=(self.width - self.logo_width) / 2,
-            y=(self.height - self.logo_height) / 2
-        )
+        self._initialize_window()
+        self._create_ui()
+        self._run_animation()
+        self._cleanup_and_show_main()
+        self.window.mainloop()
     
-    def create_loading_text(self):
-        """Create the loading text"""
+    def _initialize_window(self):
+        """Initialize window properties and position"""
+        self.window.overrideredirect(1)
+        self._center_window()
+    
+    def _center_window(self):
+        """Center the window on the screen"""
+        screen_width = self.window.winfo_screenwidth()
+        screen_height = self.window.winfo_screenheight()
+        x = int((screen_width/2) - (self.width/2))
+        y = int((screen_height/2) - (self.height/2))
+        self.window.geometry(f"{self.width}x{self.height}+{x}+{y}")
+    
+    def _create_ui(self):
+        """Create all UI elements"""
+        self._create_background()
+        self._create_logo()
+        self._create_loading_text()
+        self._load_animation_images()
+    
+    def _create_background(self):
+        """Create the main background frame"""
+        Frame(self.window, width=self.width, height=self.height, bg='#272727').place(x=0, y=0)
+    
+    def _create_logo(self):
+        """Create and position the ALPACA logo"""
+        self.logo_text = Label(self.window, text="ALPACA", fg="white", bg='#272727')
+        self.logo_text.configure(font=("Game Of Squids", 24, "bold"))
+        
+        x = (self.width - self.logo_width) / 2
+        y = (self.height - self.logo_height) / 2
+        self.logo_text.place(x=x, y=y)
+    
+    def _create_loading_text(self):
+        """Create the loading text at the bottom"""
         loading_text = Label(self.window, text="Loading...", fg="white", bg='#272727')
         loading_text.configure(font=("Calibri", 11))
         loading_text.place(x=20, y=180)
     
-    def load_animation_images(self):
-        """Load the animation images"""
+    def _load_animation_images(self):
+        """Load the circle animation images"""
         self.image_off = ImageTk.PhotoImage(Image.open("application/windows/assets/images/frontend/splash/c2_off.png"))
         self.image_on = ImageTk.PhotoImage(Image.open("application/windows/assets/images/frontend/splash/c1_on.png"))
     
-    def create_circle(self, x_pos, image):
-        """Create a circle label at the specified position"""
-        return Label(
-            self.window, 
-            image=image, 
-            border=0, 
-            relief=SUNKEN
-        ).place(
-            x=((self.width - self.logo_width) / 2) + x_pos, 
-            y=((self.height - self.logo_height) / 2) + self.logo_height + 5
-        )
+    def _create_circle(self, x_offset, image):
+        """Create a circle at the specified x-offset from the logo"""
+        x = ((self.width - self.logo_width) / 2) + x_offset
+        y = ((self.height - self.logo_height) / 2) + self.logo_height + 5
+        return Label(self.window, image=image, border=0, relief=SUNKEN).place(x=x, y=y)
     
-    def run_loading_animation(self):
+    def _run_animation(self):
         """Run the loading animation sequence"""
+        circle_positions = [45, 65, 85, 105]
         for _ in range(3):
-            # First circle active
-            self.create_circle(45, self.image_on)
-            self.create_circle(65, self.image_off)
-            self.create_circle(85, self.image_off)
-            self.create_circle(105, self.image_off)
-            self.window.update()
-            time.sleep(0.3)
-
-            # Second circle active
-            self.create_circle(45, self.image_off)
-            self.create_circle(65, self.image_on)
-            self.create_circle(85, self.image_off)
-            self.create_circle(105, self.image_off)
-            self.window.update()
-            time.sleep(0.3)
-
-            # Third circle active
-            self.create_circle(45, self.image_off)
-            self.create_circle(65, self.image_off)
-            self.create_circle(85, self.image_on)
-            self.create_circle(105, self.image_off)
-            self.window.update()
-            time.sleep(0.3)
-
-            # Fourth circle active
-            self.create_circle(45, self.image_off)
-            self.create_circle(65, self.image_off)
-            self.create_circle(85, self.image_off)
-            self.create_circle(105, self.image_on)
-            self.window.update()
-            time.sleep(0.3)
+            for active_pos in circle_positions:
+                for pos in circle_positions:
+                    self._create_circle(pos, self.image_on if pos == active_pos else self.image_off)
+                self.window.update()
+                time.sleep(0.3)
     
-    def show_main_window(self):
-        """Show the main application window"""
+    def _cleanup_and_show_main(self):
+        """Clean up splash screen and show main application"""
+        self.window.destroy()
         app = App()
         app.app.mainloop()
+
 if __name__ == "__main__":
-    splash = SplashScreen()
+    SplashScreen()

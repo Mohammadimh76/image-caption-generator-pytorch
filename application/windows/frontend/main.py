@@ -82,7 +82,6 @@ class Decoder(nn.Module):
     outputs = self.linear(outputs)
     return outputs
 
-
 class ImageCaptioning(nn.Module):
   def __init__(self, embed_size, hidden_size, vocab_size, num_layers, dropout_embd, dropout_rnn, max_seq_length=20):
     super(ImageCaptioning, self).__init__()
