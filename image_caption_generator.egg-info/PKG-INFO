@@ -1,0 +1,13 @@
+Metadata-Version: 2.4
+Name: image-caption-generator
+Version: 1.0.0
+License-File: LICENSE.txt
+Requires-Dist: torch
+Requires-Dist: torchvision
+Requires-Dist: torchtext
+Requires-Dist: customtkinter
+Requires-Dist: Pillow
+Requires-Dist: numpy
+Requires-Dist: opencv-python
+Dynamic: license-file
+Dynamic: requires-dist
