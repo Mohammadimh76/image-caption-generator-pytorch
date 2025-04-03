@@ -1,7 +1,0 @@
-torch
-torchvision
-torchtext
-customtkinter
-Pillow
-numpy
-opencv-python

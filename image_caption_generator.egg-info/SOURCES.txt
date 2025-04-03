@@ -1,9 +1,0 @@
-LICENSE.txt
-README.md
-setup.py
-image_caption_generator.egg-info/PKG-INFO
-image_caption_generator.egg-info/SOURCES.txt
-image_caption_generator.egg-info/dependency_links.txt
-image_caption_generator.egg-info/entry_points.txt
-image_caption_generator.egg-info/requires.txt
-image_caption_generator.egg-info/top_level.txt

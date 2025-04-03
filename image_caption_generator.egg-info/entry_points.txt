@@ -1,2 +1,0 @@
-[console_scripts]
-image-caption-generator = application.windows.frontend.main:main
